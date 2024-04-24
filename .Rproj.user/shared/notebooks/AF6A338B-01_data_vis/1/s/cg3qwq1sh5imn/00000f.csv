@@ -1,0 +1,2 @@
+"0","school_data %>% "
+"0","  ggplot(aes(x = school, y = score)) + geom_boxplot()"
