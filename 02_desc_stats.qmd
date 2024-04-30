@@ -1,0 +1,193 @@
+# Week 2: Descriptive Statistics 
+
+```{r}
+#| echo: false
+
+source("_common.R")
+```
+
+## Goals
+
+The goal of this activity is to use R to calculate descriptive statisics, such as the mean and standard deviation, from simulated data. In addition, we will look at an estimate of effect size called Cohen's d.
+
+## Set up (same as week 1)
+
+**Step 1** For set up, run the following code in an R script (to open an R script, go to `File`, `New File` and click `R Script`. We are calling (as in activating) our library `tidyverse` which has some functions we will need that are not included in base R. Next, I have given you code to simulate a hypothetical data set of test scores of two schools called School A and School B. The data contains 100 scores from each school.  
+
+```{r, message=FALSE}
+library(tidyverse)
+
+
+school_a = data.frame(
+  score = rnorm(n = 100, mean = 80, sd = 20)
+) %>% 
+  mutate(school = "school_a")
+
+school_b = data.frame(
+  score = rnorm(n = 100, mean = 50, sd = 20)
+) %>% 
+  mutate(school = "school_b")
+
+school_data = rbind(school_a, school_b)
+
+```
+
+## 1: Calculation: What are the means and standard deviations of both groups?
+
+Using our example from last week, let's now cacluate the details of the plots we created. First, we will calculate the mean of the simulated scores using the `mean()` function.
+You might notice that we have the `$` symbol here. `$` is a basic extraction operator, and is just telling our function `mean()` where the numbers are located that it should use.
+
+```{r}
+mean(school_a$score)
+```
+
+It's likely that you will want to report the standard deviation (a measure of spread or variation) in addition to the mean of a group. The standard deviation is important additional information because a higher SD implies less certainty surroundin the mean. 
+
+```{r}
+sd(school_a$score)
+```
+
+We can also save these calculations as objects. They will go into our global environment. The objects can be used later simply by putting their name into a new function.
+
+```{r}
+mean_school_a = mean(school_a$score)
+sd_a = sd(school_a$score)
+```
+
+
+**Problem 1**:
+
+1. Calculate the mean and standard deviation of `school_b` and save them as objects.  
+
+<p>
+  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+    Answer to question 1
+  </button>
+</p>
+<div style="min-height: 120px;">
+  <div class="collapse collapse-horizontal" id="collapseWidthExample">
+  
+```{r}
+mean_school_b = mean(school_b$score)
+sd_b = sd(school_b$score)
+```
+
+  </div>
+</div>
+
+
+## 2: Calculation: What is the difference between the groups?
+
+Now that we have saved the mean and standard deviations of both of the schools, let's calculate the difference between them. We do so simply by using the object namese and the `-` sign.
+
+```{r}
+mean_school_a - mean_school_b
+```
+
+
+We can call this difference our **measured effect** in raw units. 
+If we were reporting this difference, we could say...
+
+> The students in school A scored higher than school B by `r round(mean_school_a - mean_school_b, digits = 2)` points on average. 
+
+
+
+**Problem 2**:
+
+2. Add the two means and save it to an object.
+
+<p>
+  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample2" aria-expanded="false" aria-controls="collapseWidthExample2">
+    Answer to question 2
+  </button>
+</p>
+<div style="min-height: 120px;">
+  <div class="collapse collapse-horizontal" id="collapseWidthExample2">
+  
+
+```{r}
+you_will_probably_never_add_means = mean_school_a + mean_school_b
+```
+
+  </div>
+</div>
+
+## 3: Calculation: Is there a better way than a mean difference? Let's incorporate the standard deviation in our reporting of the effect.
+
+As we mentioned earlier, we are often interested not only in the mean difference but also how variable the means are. As a result, it is useful to express effects not just in raw units, but also how big they are relative to the variation in the data. It is important to do so because the same mean difference becomes less meaningful as the variation around it increases (and harder to find experimentally).
+
+One way of taking variation in the data and the mean difference is referred to as Cohen's d. The measure is essentially the number of (pooled) standard deviations apart two groups are. Let's use our data to demonstrate.
+
+First, let's make our mean difference an object:
+
+```{r}
+mean_difference = mean_school_a - mean_school_b
+```
+
+Next, let's figure out what the pooled standard deviation is. For simplicity, let's just take the mean of the standard deviations of both schools.
+
+```{r}
+pooled_sd = mean(sd_a, sd_b)
+```
+
+It's important to note, too, that there is an extra step in the actual calculation of pooled SD, in that you include thet number of observations so that the calculation is robust to unbalanced designs. We don't need to worry about this at the very moment, though, because both our schools have the same amount of observations. 
+
+Now, to calculate Cohen's d, we divide `mean_difference` by `pooled_sd`:
+
+```{r}
+mean_difference/pooled_sd
+```
+
+We have a pretty large effect! Plonsky & Oswald (2014) conducted a meta-analysis in L2 research of effect sizes and concluded that d = 1 is a large effect, d = .7 is a medium effect, and d = .4 is small. 
+Given that our effect is over d = 1, we can conclude it's a big effect.
+It could be reported like this:
+
+> The effect of school was large (d = `r round(mean_difference/pooled_sd, digits = 2)`) and corresponded to a difference of `r round(mean_school_a - mean_school_b, digits = 2)` in raw units. 
+
+**Problem 3: Challenge mode**:
+
+3. Re-simulate a dataset and calculate cohen's D. Edit the numbers such that cohen's d ~ .4.
+
+<p>
+  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample3" aria-expanded="false" aria-controls="collapseWidthExample3">
+    Answer to question 3
+  </button>
+</p>
+<div style="min-height: 120px;">
+  <div class="collapse collapse-horizontal" id="collapseWidthExample3">
+  
+```{r}
+## Simulate data 
+training_1 = data.frame(
+  score = rnorm(n = 100, mean = 80, sd = 20)
+) %>% 
+  mutate(school = "training_1")
+
+training_2 = data.frame(
+  score = rnorm(n = 100, mean = 72, sd = 20)
+) %>% 
+  mutate(school = "training_2")
+
+## Combine it
+training_data = rbind(training_1, training_2)
+
+## Calculate means and sds and add them to objects 
+mean_training_1 = mean(training_1$score)
+sd_training_1 = sd(training_1$score)
+
+mean_training_2 = mean(training_2$score)
+sd_training_2 = sd(training_2$score)
+
+## Calculate the mean difference and pooled sd 
+mean_difference = mean_training_1 - mean_training_2
+pooled_sd = mean(sd_training_1, sd_training_2)
+
+## Calculate Cohen's d
+mean_difference/pooled_sd
+
+```
+
+  </div>
+</div>
+
+

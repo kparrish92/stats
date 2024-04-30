@@ -1,0 +1,75 @@
+---
+title: "Example Markdown: Analysis of linguistic diversity"
+author: "Bodo Winter"
+date: "11/18/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This is the a possible solution example. To create this Markdown, I just clicked "File", then "New File", then "R Markdown ..." in RStudio. The resulting markdown is already populated with text and code chunks that you can adapt for yourself. It's probably easiest if you work like this to start things, but eventually it'll be good to learn some markdown-specific shortcuts, such as:
+
+- OPTION + CTRL/COMMAND + I : create code chunk
+- CTRL/COMMAND + SHIFT + ENTER : run current chunk
+- CTRL + SHIFT + K : knit file
+
+It'll be convenient for you to work with .R files as you work yourself through the book. However, for your actual analysis project, I highly(!!) recommend using Markdown files.
+
+Let's get to the exercise, which asked you to load the tidyverse package and Nettle data in the first code chunk. Notice that you can still write comments inside the code chunk if you wish to.
+
+```{r message = FALSE}
+# Load package:
+
+library(tidyverse)
+
+# Load Nettle (1999) dataset:
+
+nettle <- read_csv('../data/nettle_1999_climate.csv')
+
+# Check:
+
+nettle
+```
+
+In the above code chunk, I set the additional argument message = FALSE so that the code chunk doesn't print all the package loading info, and how read_csv() parsed the data. It just looks cleaner this way — a personal preference.
+
+I decided not to name the code chunks (you may wish to do name them, which is the case in the example markdown once you press "New File" -> "R Markdown ..."). Naming code chunks can sometimes make it easier to find errors.
+
+Side note: When you run the Markdown inside RStudio interactively (rather than knitting the complete file), you have to see whether your working directory actually switches to where the file is. Use the "getwd()" function to interrogate this. It'll definitely work when you knit the file! On some machines (like my own), the default is that the directory is set to the Markdown's working directory when you open up a new RStudio session by double-clicking on the file (rather than opening up the file from within a running RStudio session).
+
+Another side note: The new RStudio defaults will print the output of each code chunk into the script editor window. I personally hate this, as I'd rather see the output in the console. To change this setting, click "RStudio" then "Preferences...". There, open the "R Markdown" pane and untick the box for "Show output inline for all R Markdown documents".
+
+## Compute sum of languages
+
+Let's get to the other part of the exercise, which is to compute the sum of languages. We could do this the tidyverse way like this:
+
+```{r}
+nettle %>% summarize(Sum = sum(Langs))
+
+# The same without pipe:
+
+summarize(nettle, Sum = sum(Langs))
+
+# Or like this:
+
+nettle %>% pull(Langs) %>% sum()
+```
+
+But in this case, the base R version is arguably simpler:
+
+```{r}
+sum(nettle$Langs)
+```
+
+The tidyverse is optimized for working with data frames (or tibbles). For simple operations, like computing the sum of just one column, it may sometimes be easier to use the corresponding base R code.
+
+Press the knit button or use the shortcut above to knit the file to HTML!
+
+This completes this exercise.
+
+
+

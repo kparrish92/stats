@@ -1,6 +1,0 @@
-"0","library(tidyverse)"
-"0",""
-"0","school_data = "
-"0","  data.frame(score = c(rnorm(n = 1000, mean = 55, sd = 20),"
-"0","                       rnorm(n = 1000, mean = 80, sd = 20)),"
-"0","             school = rep(c(""school_a"", ""school_b""), each = 20))"

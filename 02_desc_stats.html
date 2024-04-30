@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>data_vis</title>
+<title>desc_stats</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,16 +57,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="01_data_vis_files/libs/clipboard/clipboard.min.js"></script>
-<script src="01_data_vis_files/libs/quarto-html/quarto.js"></script>
-<script src="01_data_vis_files/libs/quarto-html/popper.min.js"></script>
-<script src="01_data_vis_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="01_data_vis_files/libs/quarto-html/anchor.min.js"></script>
-<link href="01_data_vis_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="01_data_vis_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="01_data_vis_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="01_data_vis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="01_data_vis_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="02_desc_stats_files/libs/clipboard/clipboard.min.js"></script>
+<script src="02_desc_stats_files/libs/quarto-html/quarto.js"></script>
+<script src="02_desc_stats_files/libs/quarto-html/popper.min.js"></script>
+<script src="02_desc_stats_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="02_desc_stats_files/libs/quarto-html/anchor.min.js"></script>
+<link href="02_desc_stats_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="02_desc_stats_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="02_desc_stats_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="02_desc_stats_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="02_desc_stats_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -79,14 +79,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="sec-data-visualization" class="level1">
-<h1>Week 1: Data visualization</h1>
+<section id="week-2-descriptive-statistics" class="level1">
+<h1>Week 2: Descriptive Statistics</h1>
 <section id="goals" class="level2">
 <h2 class="anchored" data-anchor-id="goals">Goals</h2>
-<p>The goal of this activity is to build practice visualizing data already imported into R, and how to interpret these visualizations.</p>
+<p>The goal of this activity is to use R to calculate descriptive statisics, such as the mean and standard deviation, from simulated data. In addition, we will look at an estimate of effect size called Cohen’s d.</p>
 </section>
-<section id="set-up" class="level2">
-<h2 class="anchored" data-anchor-id="set-up">Set up</h2>
+<section id="set-up-same-as-week-1" class="level2">
+<h2 class="anchored" data-anchor-id="set-up-same-as-week-1">Set up (same as week 1)</h2>
 <p><strong>Step 1</strong> For set up, run the following code in an R script (to open an R script, go to <code>File</code>, <code>New File</code> and click <code>R Script</code>. We are calling (as in activating) our library <code>tidyverse</code> which has some functions we will need that are not included in base R. Next, I have given you code to simulate a hypothetical data set of test scores of two schools called School A and School B. The data contains 100 scores from each school.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -105,35 +105,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>school_data <span class="ot">=</span> <span class="fu">rbind</span>(school_a, school_b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="visualizing-data-which-school-teaches-french-better" class="level2">
-<h2 class="anchored" data-anchor-id="visualizing-data-which-school-teaches-french-better">1: Visualizing data: Which school teaches French better?</h2>
-<p>We can change things, though. In the code below, replace <code>geom_boxplot()</code> with <code>geom_point()</code>. Now we have points instead of a boxplot! Try <code>geom_jitter()</code>.</p>
+<section id="calculation-what-are-the-means-and-standard-deviations-of-both-groups" class="level2">
+<h2 class="anchored" data-anchor-id="calculation-what-are-the-means-and-standard-deviations-of-both-groups">1: Calculation: What are the means and standard deviations of both groups?</h2>
+<p>Using our example from last week, let’s now cacluate the details of the plots we created. First, we will calculate the mean of the simulated scores using the <code>mean()</code> function. You might notice that we have the <code>$</code> symbol here. <code>$</code> is a basic extraction operator, and is just telling our function <code>mean()</code> where the numbers are located that it should use.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>school_data <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> school, <span class="at">y =</span> score)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="01_data_vis_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="576"></p>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(school_a<span class="sc">$</span>score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>What if we want colors? I can add <code>color = school</code>.</p>
+<p>It’s likely that you will want to report the standard deviation (a measure of spread or variation) in addition to the mean of a group. The standard deviation is important additional information because a higher SD implies less certainty surroundin the mean.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>school_data <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> school, <span class="at">y =</span> score, <span class="at">color =</span> school)) <span class="sc">+</span> <span class="fu">geom_jitter</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="01_data_vis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="576"></p>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(school_a<span class="sc">$</span>score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>Now, change <code>color</code> to <code>shape</code>.</p>
+<p>We can also save these calculations as objects. They will go into our global environment. The objects can be used later simply by putting their name into a new function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>school_data <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> school, <span class="at">y =</span> score, <span class="at">shape =</span> school)) <span class="sc">+</span> <span class="fu">geom_jitter</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="01_data_vis_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="576"></p>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mean_school_a <span class="ot">=</span> <span class="fu">mean</span>(school_a<span class="sc">$</span>score)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sd_a <span class="ot">=</span> <span class="fu">sd</span>(school_a<span class="sc">$</span>score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p><strong>Problems</strong>:</p>
+<p><strong>Problem 1</strong>:</p>
 <ol type="1">
-<li>Given <code>school_data</code>, how can you change both the color and shape on the basis of school?</li>
+<li>Calculate the mean and standard deviation of <code>school_b</code> and save them as objects.</li>
 </ol>
 <p>
 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
@@ -142,18 +131,26 @@ Answer to question 1
 </p>
 <div style="min-height: 120px;">
 <div id="collapseWidthExample" class="collapse collapse-horizontal">
-<p>You add an argument for both <code>shape</code> and <code>color</code> under <code>aes</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>school_data <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> school, <span class="at">y =</span> score, <span class="at">shape =</span> school, <span class="at">color =</span> school)) <span class="sc">+</span> <span class="fu">geom_jitter</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="01_data_vis_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="576"></p>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mean_school_b <span class="ot">=</span> <span class="fu">mean</span>(school_b<span class="sc">$</span>score)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sd_b <span class="ot">=</span> <span class="fu">sd</span>(school_b<span class="sc">$</span>score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
+</section>
+<section id="calculation-what-is-the-difference-between-the-groups" class="level2">
+<h2 class="anchored" data-anchor-id="calculation-what-is-the-difference-between-the-groups">2: Calculation: What is the difference between the groups?</h2>
+<p>Now that we have saved the mean and standard deviations of both of the schools, let’s calculate the difference between them. We do so simply by using the object namese and the <code>-</code> sign.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mean_school_a <span class="sc">-</span> mean_school_b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>We can call this difference our <strong>measured effect</strong> in raw units. If we were reporting this difference, we could say…</p>
+<blockquote class="blockquote">
+<p>The students in school A scored higher than school B by 29.12 points on average.</p>
+</blockquote>
+<p><strong>Problem 2</strong>:</p>
 <ol start="2" type="1">
-<li>Given <code>school_data</code>, how can you change the color on the basis of score, rather than school?</li>
+<li>Add the two means and save it to an object.</li>
 </ol>
 <p>
 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample2" aria-expanded="false" aria-controls="collapseWidthExample2">
@@ -162,18 +159,36 @@ Answer to question 2
 </p>
 <div style="min-height: 120px;">
 <div id="collapseWidthExample2" class="collapse collapse-horizontal">
-<p>You change <code>color</code> to <code>score</code> in the <code>aes</code> layer.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>school_data <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> school, <span class="at">y =</span> score, <span class="at">color =</span> score)) <span class="sc">+</span> <span class="fu">geom_jitter</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="01_data_vis_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="576"></p>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>you_will_probably_never_add_means <span class="ot">=</span> mean_school_a <span class="sc">+</span> mean_school_b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
+</section>
+<section id="calculation-is-there-a-better-way-than-a-mean-difference-lets-incorporate-the-standard-deviation-in-our-reporting-of-the-effect." class="level2">
+<h2 class="anchored" data-anchor-id="calculation-is-there-a-better-way-than-a-mean-difference-lets-incorporate-the-standard-deviation-in-our-reporting-of-the-effect.">3: Calculation: Is there a better way than a mean difference? Let’s incorporate the standard deviation in our reporting of the effect.</h2>
+<p>As we mentioned earlier, we are often interested not only in the mean difference but also how variable the means are. As a result, it is useful to express effects not just in raw units, but also how big they are relative to the variation in the data. It is important to do so because the same mean difference becomes less meaningful as the variation around it increases (and harder to find experimentally).</p>
+<p>One way of taking variation in the data and the mean difference is referred to as Cohen’s d.&nbsp;The measure is essentially the number of (pooled) standard deviations apart two groups are. Let’s use our data to demonstrate.</p>
+<p>First, let’s make our mean difference an object:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mean_difference <span class="ot">=</span> mean_school_a <span class="sc">-</span> mean_school_b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Next, let’s figure out what the pooled standard deviation is. For simplicity, let’s just take the mean of the standard deviations of both schools.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pooled_sd <span class="ot">=</span> <span class="fu">mean</span>(sd_a, sd_b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It’s important to note, too, that there is an extra step in the actual calculation of pooled SD, in that you include thet number of observations so that the calculation is robust to unbalanced designs. We don’t need to worry about this at the very moment, though, because both our schools have the same amount of observations.</p>
+<p>Now, to calculate Cohen’s d, we divide <code>mean_difference</code> by <code>pooled_sd</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mean_difference<span class="sc">/</span>pooled_sd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We have a pretty large effect! Plonsky &amp; Oswald (2014) conducted a meta-analysis in L2 research of effect sizes and concluded that d = 1 is a large effect, d = .7 is a medium effect, and d = .4 is small. Given that our effect is over d = 1, we can conclude it’s a big effect. It could be reported like this:</p>
+<blockquote class="blockquote">
+<p>The effect of school was large (d = 1.39) and corresponded to a difference of 29.12 in raw units.</p>
+</blockquote>
+<p><strong>Problem 3: Challenge mode</strong>:</p>
 <ol start="3" type="1">
-<li>Given <code>school_data</code>, create a box plot which in which the data are colored according to school.</li>
+<li>Re-simulate a dataset and calculate cohen’s D. Edit the numbers such that cohen’s d ~ .4.</li>
 </ol>
 <p>
 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample3" aria-expanded="false" aria-controls="collapseWidthExample3">
@@ -183,11 +198,33 @@ Answer to question 3
 <div style="min-height: 120px;">
 <div id="collapseWidthExample3" class="collapse collapse-horizontal">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>school_data <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> school, <span class="at">y =</span> score, <span class="at">color =</span> school)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="01_data_vis_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="576"></p>
-</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Simulate data </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>training_1 <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">score =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">80</span>, <span class="at">sd =</span> <span class="dv">20</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">school =</span> <span class="st">"training_1"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>training_2 <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">score =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">72</span>, <span class="at">sd =</span> <span class="dv">20</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">school =</span> <span class="st">"training_2"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Combine it</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>training_data <span class="ot">=</span> <span class="fu">rbind</span>(training_1, training_2)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate means and sds and add them to objects </span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>mean_training_1 <span class="ot">=</span> <span class="fu">mean</span>(training_1<span class="sc">$</span>score)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>sd_training_1 <span class="ot">=</span> <span class="fu">sd</span>(training_1<span class="sc">$</span>score)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>mean_training_2 <span class="ot">=</span> <span class="fu">mean</span>(training_2<span class="sc">$</span>score)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>sd_training_2 <span class="ot">=</span> <span class="fu">sd</span>(training_2<span class="sc">$</span>score)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate the mean difference and pooled sd </span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>mean_difference <span class="ot">=</span> mean_training_1 <span class="sc">-</span> mean_training_2</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>pooled_sd <span class="ot">=</span> <span class="fu">mean</span>(sd_training_1, sd_training_2)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate Cohen's d</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>mean_difference<span class="sc">/</span>pooled_sd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
