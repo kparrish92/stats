@@ -77,7 +77,8 @@ food_ratings = data.frame(n = 100, pizza_rating = random_integers(n = 100, mean_
                           
 ```
 
-First, let's take visualize the ratings with a boxplot.
+First, let's take visualize the ratings with a boxplot. In a boxplot, the box shows us where 50% of the data points are (under what numerical range of numbers), while the "whiskers" show the upper and lower 25% of the data. 
+The line in the box is the median. 
 
 ```{r}
 # simulated data for now 
