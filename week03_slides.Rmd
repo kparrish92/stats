@@ -1,0 +1,192 @@
+---
+title: "Null Hypotheses and Significance Testing"
+author: "Kyle Parrish"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumber: true
+      ratio: 16:9
+---
+
+# Slide Header 1
+
+## Formulating Hypotheses
+
+In frequentist statistics, many hypotheses are tested against the so-called **null hypothesis**.
+
+--
+
+> **Null Hypothesis (H0)**: No difference between groups  
+> **Alternative Hypothesis (HA)**: There is a difference between groups.
+
+--
+
+- Example:
+  - H0: μ1 = μ2
+  - HA: μ1 ≠ μ2
+
+---
+
+# Slide Header 2
+
+## Null Hypotheses Significance Testing (NHST)
+
+<div style="display: flex;">
+  <div style="flex: 1;">
+    <ul>
+      <li>Involves a hard-cut decision rule on confidence intervals</li>
+      <li>Simplifies decision-making to binary outcomes: 'yes' or 'no'</li>
+      <li>Criticized for:
+        <ul>
+          <li>Encouraging dichotomous and lazy thinking</li>
+          <li>Leading to "mindless statistical rituals"</li>
+        </ul>
+      </li>
+      <li>Despite criticisms, p-values are prevalent in literature</li>
+    </ul>
+  </div>
+  <div style="flex: 1;">
+    <img src="https://unsplash.com/photos/financial-data-analysis-and-business-growth-and-bar-graph-on-yellow-background-3d-render-illustration-zLZbAUx72ks" style="width: 100%; height: auto;">
+  </div>
+</div>
+
+---
+
+# Slide Header 3
+
+## Understanding Null Hypothesis
+
+<div style="display: flex;">
+  <div style="flex: 1;">
+    <ul>
+      <li style="color: blue;">Assumes no difference in population parameters</li>
+      <li>Null hypothesis is an assumption, not a direct measurement</li>
+      <li>Functions as a 'statistical scapegoat' for argument</li>
+    </ul>
+  </div>
+  <div style="flex: 1;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/10/Statistical_Thinking.png" style="width: 100%; height: auto;">
+  </div>
+</div>
+
+---
+
+# Slide Header 4
+
+## Using t to Measure Incompatibility with the Null Hypothesis
+
+<div style="display: flex;">
+  <div style="flex: 1;">
+    <ul>
+      <li>Various test statistics like t, F, χ2 are used in significance testing</li>
+      <li>t is commonly used to test differences between two groups</li>
+      <li>Formula:</li>
+    </ul>
+    <p style="text-align: center;">\[ t = \frac{x_1 - x_2}{SE} \]</p>
+    <ul>
+      <li>Numerator: difference between group means (unstandardized effect size)</li>
+      <li>Denominator: standard error (accounts for variability and sample size)</li>
+      <li>Roman letters indicate sample estimates</li>
+    </ul>
+  </div>
+  <div style="flex: 1;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/T-Test_Statistics.png" style="width: 100%; height: auto;">
+  </div>
+</div>
+
+---
+
+# Slide Header 5
+
+## Interpreting t-Value
+
+<div style="display: flex;">
+  <div style="flex: 1;">
+    <ul>
+      <li>Measures incompatibility with the null hypothesis</li>
+      <li>Larger t-values indicate greater incompatibility</li>
+      <li>Determines statistical significance</li>
+    </ul>
+  </div>
+  <div style="flex: 1;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Student_t_law%2C_7_degrees_of_freedom%2C_quantiles_at_5%25_and_95%25.png" style="width: 100%; height: auto;">
+  </div>
+</div>
+
+---
+
+# Slide Header 6
+
+## Using the t-Distribution to Compute p-Values
+
+<div style="display: flex;">
+  <div style="flex: 1;">
+    <ul>
+      <li>Resembles the normal distribution but with heavier tails</li>
+      <li>Indicates probability of t-values under the null hypothesis</li>
+      <li>Large or small t-values are improbable under H0</li>
+    </ul>
+  </div>
+  <div style="flex: 1;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Student_t_pdf.png" style="width: 100%; height: auto;">
+  </div>
+</div>
+
+---
+
+# Slide Header 7
+
+## p-Value Calculation
+
+<div style="display: flex;">
+  <div style="flex: 1;">
+    <ul>
+      <li>Probability of obtaining a t-value given H0 is true</li>
+      <li>Example: t = 1.5, p = 0.14</li>
+      <li>p < 0.05 is the conventional threshold for rejecting H0 (α = 0.05)</li>
+      <li>Critical value for p  < 0.05: t = ±1.98</li>
+    </ul>
+  </div>
+  <div style="flex: 1;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/47/P-value.png" style="width: 100%; height: auto;">
+  </div>
+</div>
+
+---
+
+# Slide Header 8
+
+## Two-Tailed Tests
+
+<div style="display: flex;">
+  <div style="flex: 1;">
+    <ul>
+      <li>Tests for significant effects in both directions</li>
+      <li>Preferred in psychological and linguistic applications</li>
+    </ul>
+  </div>
+  <div style="flex: 1;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/P_Values.svg" style="width: 100%; height: auto;">
+  </div>
+</div>
+
+---
+
+# Slide Header 9
+
+## Chapter Conclusions
+
+<div style="display: flex;">
+  <div style="flex: 1;">
+    <ul>
+      <li><strong>Inferential Statistics</strong></li>
+      <li>Uses sample estimates to infer population parameters</li>
+      <li><strong>NHST Basics</strong></li>
+      <li>Posits a null hypothesis about population characteristics</li>
+      <li>Tests sample data against this hypothesis</li>
+    </ul>
+  </

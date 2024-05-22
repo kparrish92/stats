@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Null Hypotheses and Significance Testing</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kyle Parrish" />
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Null Hypotheses and Significance Testing
+]
+.author[
+### Kyle Parrish
+]
+
+---
+
+
+# Slide Header 1
+
+## Formulating Hypotheses
+
+In frequentist statistics, many hypotheses are tested against the so-called **null hypothesis**.
+
+--
+
+&gt; **Null Hypothesis (H0)**: No difference between groups  
+&gt; **Alternative Hypothesis (HA)**: There is a difference between groups.
+
+--
+
+- Example:
+  - H0: μ1 = μ2
+  - HA: μ1 ≠ μ2
+
+---
+
+# Slide Header 2
+
+## Null Hypotheses Significance Testing (NHST)
+
+&lt;div style="display: flex;"&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Involves a hard-cut decision rule on confidence intervals&lt;/li&gt;
+      &lt;li&gt;Simplifies decision-making to binary outcomes: 'yes' or 'no'&lt;/li&gt;
+      &lt;li&gt;Criticized for:
+        &lt;ul&gt;
+          &lt;li&gt;Encouraging dichotomous and lazy thinking&lt;/li&gt;
+          &lt;li&gt;Leading to "mindless statistical rituals"&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Despite criticisms, p-values are prevalent in literature&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;img src="https://unsplash.com/photos/financial-data-analysis-and-business-growth-and-bar-graph-on-yellow-background-3d-render-illustration-zLZbAUx72ks" style="width: 100%; height: auto;"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+# Slide Header 3
+
+## Understanding Null Hypothesis
+
+&lt;div style="display: flex;"&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;ul&gt;
+      &lt;li style="color: blue;"&gt;Assumes no difference in population parameters&lt;/li&gt;
+      &lt;li&gt;Null hypothesis is an assumption, not a direct measurement&lt;/li&gt;
+      &lt;li&gt;Functions as a 'statistical scapegoat' for argument&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;img src="https://upload.wikimedia.org/wikipedia/commons/1/10/Statistical_Thinking.png" style="width: 100%; height: auto;"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+# Slide Header 4
+
+## Using t to Measure Incompatibility with the Null Hypothesis
+
+&lt;div style="display: flex;"&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Various test statistics like t, F, χ2 are used in significance testing&lt;/li&gt;
+      &lt;li&gt;t is commonly used to test differences between two groups&lt;/li&gt;
+      &lt;li&gt;Formula:&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p style="text-align: center;"&gt;\[ t = \frac{x_1 - x_2}{SE} \]&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Numerator: difference between group means (unstandardized effect size)&lt;/li&gt;
+      &lt;li&gt;Denominator: standard error (accounts for variability and sample size)&lt;/li&gt;
+      &lt;li&gt;Roman letters indicate sample estimates&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/T-Test_Statistics.png" style="width: 100%; height: auto;"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+# Slide Header 5
+
+## Interpreting t-Value
+
+&lt;div style="display: flex;"&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Measures incompatibility with the null hypothesis&lt;/li&gt;
+      &lt;li&gt;Larger t-values indicate greater incompatibility&lt;/li&gt;
+      &lt;li&gt;Determines statistical significance&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Student_t_law%2C_7_degrees_of_freedom%2C_quantiles_at_5%25_and_95%25.png" style="width: 100%; height: auto;"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+# Slide Header 6
+
+## Using the t-Distribution to Compute p-Values
+
+&lt;div style="display: flex;"&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Resembles the normal distribution but with heavier tails&lt;/li&gt;
+      &lt;li&gt;Indicates probability of t-values under the null hypothesis&lt;/li&gt;
+      &lt;li&gt;Large or small t-values are improbable under H0&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Student_t_pdf.png" style="width: 100%; height: auto;"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+# Slide Header 7
+
+## p-Value Calculation
+
+&lt;div style="display: flex;"&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Probability of obtaining a t-value given H0 is true&lt;/li&gt;
+      &lt;li&gt;Example: t = 1.5, p = 0.14&lt;/li&gt;
+      &lt;li&gt;p &lt; 0.05 is the conventional threshold for rejecting H0 (α = 0.05)&lt;/li&gt;
+      &lt;li&gt;Critical value for p  &lt; 0.05: t = ±1.98&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;img src="https://upload.wikimedia.org/wikipedia/commons/4/47/P-value.png" style="width: 100%; height: auto;"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+# Slide Header 8
+
+## Two-Tailed Tests
+
+&lt;div style="display: flex;"&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Tests for significant effects in both directions&lt;/li&gt;
+      &lt;li&gt;Preferred in psychological and linguistic applications&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/P_Values.svg" style="width: 100%; height: auto;"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+# Slide Header 9
+
+## Chapter Conclusions
+
+&lt;div style="display: flex;"&gt;
+  &lt;div style="flex: 1;"&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;Inferential Statistics&lt;/strong&gt;&lt;/li&gt;
+      &lt;li&gt;Uses sample estimates to infer population parameters&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;NHST Basics&lt;/strong&gt;&lt;/li&gt;
+      &lt;li&gt;Posits a null hypothesis about population characteristics&lt;/li&gt;
+      &lt;li&gt;Tests sample data against this hypothesis&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumber": true,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
