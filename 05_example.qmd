@@ -6,7 +6,7 @@
 source("_common.R")
 ```
 
-The purpose of this page is to provide you with a working example of the final project. I select a publicly available dataset, create some visualizations, then run t-tests and report my results.
+The purpose of this page is to provide you with a working example of the final project. I select a publicly available data set, create some visualizations, then run t-tests and report my results.
 
 Week 1 [Data Vislualization](https://kparrish92.github.io/stats/01_data_vis.html)
 
@@ -114,8 +114,8 @@ num = this_df$mean[1] - this_df$mean[2] # female to male
 den = mean(this_df$sd)
 
 mf = round(this_df$mean[1], digits = 2)
-sdf = round(this_df$mean[2], digits = 2)
-mm = round(this_df$sd[1], digits = 2)
+mm = round(this_df$mean[2], digits = 2)
+sdf = round(this_df$sd[1], digits = 2)
 sdm =   round(this_df$sd[2], digits = 2)
   
 es = round(num/den, digits = 2)
@@ -220,3 +220,7 @@ run_and_report_t_test("u")
 `r run_and_report_t_test("o")`
 
 `r run_and_report_t_test("u")`
+
+## Discussion 
+
+How do the results of the tests support your hypothesis? 

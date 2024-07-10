@@ -1,10 +1,21 @@
-# Week 4: Review 
+# Final Project: Statistics for Linguistcs 
+## SoSE 2024
+
+The general due date for this activity is **July 24th**, but if you need more time please discuss this with me. 
+To turn in your work, please save your R script and title it using your last name (e.g. Parrish.R), and also include a document (word, pdf, Google doc etc.) which includes a description of the data you chose, your visualization and your reporting of the descriptive and inferential statistics. 
+
+Send these two files to me via email: `Parrish@em.uni-frankfurt.de`
+
+Here is an [example](https://kparrish92.github.io/stats/05_example.html) in HTML format.
 
 ```{r}
 #| echo: false
 
 source("_common.R")
 ```
+
+
+**Previous activities for reference**
 
 Week 1 [Data Vislualization](https://kparrish92.github.io/stats/01_data_vis.html)
 
