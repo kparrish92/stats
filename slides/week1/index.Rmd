@@ -1,0 +1,241 @@
+---
+title: "Week 1: Distributions, means and standard deviations"
+subtitle: 'Statistics for Linguists'
+author  : "Kyle Parrish"
+date    : "Goethe Uni Frankurt</br>Summer 2025</br>Last update: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, hygge, my-css.css, rutgers-fonts]
+    lib_dir: libs
+    nature:
+      countIncrementalSlides: false
+      ratio: 16:9
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = '', fig.width = 6, fig.height = 6, message = FALSE, warning = FALSE, echo = FALSE
+)
+```
+
+```{r xaringan-themer, include=FALSE}
+library(xaringanthemer)
+style_duo_accent(
+  # primary_color = "#345865",
+  primary_color = "#B56B6F",
+  secondary_color = "#2c8475",
+  black_color = "#4242424",
+  white_color = "#FFF",
+  base_font_size = "25px",
+  # text_font_family = "Jost",
+  # text_font_url = "https://indestructibletype.com/fonts/Jost.css",
+  header_font_google = google_font("Times New Roman", "400", "700"),
+  header_font_weight = "400",
+  inverse_header_color = "#eaeaea",
+  title_slide_text_color = "black",
+  text_slide_number_color = "#9a9a9a",
+  text_bold_color = "#f79334",
+  code_inline_color = "#B56B6F",
+  code_highlight_color = "transparent",
+  link_color = "#2c8475",
+  table_row_even_background_color = lighten_color("#345865", 0.9),
+  extra_fonts = list(
+    google_font("Times New Roman", "400")
+  ),
+  colors = c(
+    green = "#31b09e",
+    "green-dark" = "#2c8475",
+    highlight = "#87f9bb",
+    purple = "#887ba3",
+    pink = "#B56B6F",
+    orange = "#f79334",
+    red = "#dc322f",
+    `blue-dark` = "#002b36",
+    `text-dark` = "#202020",
+    `text-darkish` = "#424242",
+    `text-mild` = "#606060",
+    `text-light` = "#9a9a9a",
+    `text-lightest` = "#eaeaea"
+  ),
+  extra_css = list(
+    ".remark-slide-content h3" = list(
+      "margin-bottom" = 0, 
+      "margin-top" = 0
+    ),
+    ".smallish, .smallish .remark-code-line" = list(`font-size` = "0.9em")
+  )
+)
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons", "share_again"))
+xaringanExtra::use_extra_styles()
+```
+
+
+```{r components, include=FALSE}
+slides_from_images <- function(
+  path,
+  regexp = NULL,
+  class = "hide-count",
+  background_size = "contain",
+  background_position = "top left"
+) {
+  if (isTRUE(getOption("slide_image_placeholder", FALSE))) {
+    return(glue::glue("Slides to be generated from [{path}]({path})"))
+  }
+  if (fs::is_dir(path)) {
+    imgs <- fs::dir_ls(path, regexp = regexp, type = "file", recurse = FALSE)
+  } else if (all(fs::is_file(path) && fs::file_exists(path))) {
+    imgs <- path
+  } else {
+    stop("path must be a directory or a vector of images")
+  }
+  imgs <- fs::path_rel(imgs, ".")
+  breaks <- rep("\n---\n", length(imgs))
+  breaks[length(breaks)] <- ""
+
+  txt <- glue::glue("
+  class: {class}
+  background-image: url('{imgs}')
+  background-size: {background_size}
+  background-position: {background_position}
+  {breaks}
+  ")
+
+  paste(txt, sep = "", collapse = "")
+}
+options("slide_image_placeholder" = FALSE)
+```
+
+# Warm up: 10 minutes
+
+.pull-left[
+.full-width[
+.content-box-grey[
+Without looking, what would you guess are the differences between **descriptive** and **inferential** statistics?
+
+Why do we need both?
+]]]
+
+---
+
+# Warm up
+
+.pull-left[
+.full-width[
+.content-box-grey[
+**Descriptive Statistics** are a summary of the actual collected data sample (such as the mean and standard deviation). These are directly measured.
+]]]
+
+--
+
+.pull-right[
+.full-width[
+.content-box-grey[
+**Inferential Statistics** test hypotheses on the basis of a sample of data and how much information can be inferred by the data (e.g. is there a difference between two points of comparison)?
+]]]
+
+---
+
+# Example: Test scores 
+
+.large[
+We want to know if .blue[school A] has better test scores than .red[school B]
+]
+
+--
+
+.large[
+We ask 10 people their test scores at both schools:
+]
+
+```{r, echo=TRUE}
+# Scores range from 0-100 in percentage correct
+scores_school_a = c(65, 42, 91, 95, 71, 54, 90, 82, 73, 80)
+
+scores_school_b = c(71, 98, 82, 51, 44, 68, 80, 70, 81, 63)
+```
+--
+
+```{r, echo = TRUE}
+# means of the schools 
+mean(scores_school_a)
+mean(scores_school_b)
+```
+
+---
+
+# Example: Test scores 
+
+.large[
+The descriptive statistics suggest that .blue[school A] does indeed have better test scores than .red[school B]...but can we trust this difference?
+]
+
+--
+
+.large[
+In this case, we have a **mean difference** of 
+`r round(mean(scores_school_a) - mean(scores_school_b), digits = 2)`]
+
+--
+
+.large[
+Importantly, a given mean difference has much more meaning in the context of its variation: one measure of variation is the **standard deviation**.
+]
+
+---
+
+# Standard Deviation
+
+.large[
+For normally distributed data, 68% of the data points fall within +/- 1 standard deviation of the mean.
+]
+
+--
+
+```{r, echo = TRUE}
+# Standard deviations of both schools 
+sd(scores_school_a)
+sd(scores_school_b)
+```
+
+
+---
+
+background-image: url(./images/school_a_low.svg)
+background-size: contain
+
+---
+
+background-image: url(./images/school_b_low.svg)
+background-size: contain
+
+---
+
+background-image: url(./images/school_both_low.svg)
+background-size: contain
+
+---
+
+
+# Is School A better?
+
+.large[
+We have a small sample that make it difficult to tell whether the measured difference is reliable or due to random error (statistical power).
+]
+
+--
+
+.large[
+Let's say we try the experiment again, but this time we get 100 tests:
+]
+
+
+---
+
+background-image: url(./images/school_both_high.svg)
+background-size: contain
+
+---
+
+background-image: url(./images/school_both_high_eff.svg)
+background-size: contain
+
