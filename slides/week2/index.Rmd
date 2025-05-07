@@ -1,0 +1,422 @@
+---
+title: "Week 2: Statistical Power"
+subtitle: 'Statistics for Linguists'
+author  : "Kyle Parrish"
+date    : "Goethe Uni Frankurt</br>Summer 2025</br>Last update: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, hygge, my-css.css, rutgers-fonts]
+    lib_dir: libs
+    nature:
+      countIncrementalSlides: false
+      ratio: 16:9
+---
+
+```{r, include = FALSE}
+library(here)
+library(tidyverse)
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+# Statistical Power
+
+--
+
+.large[
+.pull-left[
+Power or statistical power refers to the .blue[probability of detecting an effect] in an experiment given a given amount of data.
+
+**Low power has important consequences**
+]]
+
+--
+
+.large[
+.pull-left[
+**False negatives**: Low potency leads to a large number of false negatives.
+
+**The Winner's Curse**: Low-power studies that do find an effect are (almost) guaranteed to overestimate it.
+]]
+
+---
+
+class: title-slide-section, middle
+
+## Part 1: Lower power causes a higher proportion of **false negative** results.
+
+---
+
+background-image: url(./img/fp.png)
+background-size: contain
+
+---
+
+
+background-image: url(./img/slide1.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide2.png)
+background-size: contain
+
+---
+
+
+background-image: url(./img/slide3.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide4.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide5.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide6.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide7.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide8.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide9.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide10.png)
+background-size: contain
+
+---
+
+class: title-slide-section, middle
+
+### I believe Texas Tech test scores are **10 points higher** on average.
+
+--
+
+### How many tests do we need to “get” from each location?
+
+---
+
+# Let's simulate the theft!
+
+--
+
+.large[
+**Simulate the entire population**
+
+Suppose there are **500** exams at each site.
+
+Average score at Texas Tech = .red[75] points.
+
+Average score at UT Austin = .orange[65] points.
+]
+
+--
+
+```{r}
+# Load libraries 
+library(tidyverse)
+# Set the seed so that we can reproduce the simulation exactly
+set.seed(920)
+# Set the level of variation 
+sd_for_all = 20
+
+## Simulating Texas Tech math scores
+tt_math = data.frame(scores = rnorm(n = 500, mean = 75, sd = sd_for_all)) %>% 
+  mutate(source = "texas_tech")
+
+## Simulating UT Austin math scores
+ut_math = data.frame(scores = rnorm(n = 500, mean = 65, sd = sd_for_all)) %>% 
+  mutate(source = "ut_austin")
+```
+
+---
+
+# Let's simulate the theft!
+
+--
+.large[
+Now, we simulate taking a **sample** from this population.
+
+When we take a sample, we **randomly** draw data points from a population.
+
+In this example, we draw 10 rows from each of the population of 500.
+]
+--
+
+```{r}
+# Specify here what your guess is - how many tests do we need?
+guess = 10
+# Set the seed so that we can reproduce the simulation exactly
+set.seed(4)
+# Extract a number of rows from the underlying distribution equal to `guess`
+tt_sample = sample_n(tt_math, size = guess)
+ut_sample = sample_n(ut_math, size = guess)
+# Calculate the mean difference between the extracted samples - remember the true difference is 10
+mean(tt_sample$scores)-mean(ut_sample$scores)
+```
+
+--
+
+The difference, `r round(mean(tt_sample$scores)-mean(ut_sample$scores), digits = 2)`, is less than the true difference of 10 points.
+
+---
+
+# Let's simulate the theft!
+
+--
+.large[
+Now the question is: is this difference significant or is it simply due to chance?
+]
+
+--
+
+To answer, we will use a .blue [t-test] to decide. This test analyzes whether we can conclude that there are differences between two data sets.
+
+--
+
+**The decision rule using the .blue[p-value]** 
+
+If .green[p < .05], we say there is a .green[significant difference].
+
+If .blue[p > .05], we say the result is .blue[not significant].
+
+---
+
+# Let's simulate the theft!
+
+.large[
+Let's perform the t-test in R:
+]
+
+--
+
+```{r}
+t.test(tt_sample$scores, ut_sample$scores)
+```
+
+--
+
+The p-value is `r round(t.test(tt_sample$scores, ut_sample$scores)[["p.value"]], digits = 2)`. **What do we conclude?**
+
+--
+
+We did not find **any evidence** that Texas Tech is better at math.
+--
+
+...but we know that there is a difference in reality! We just did not have enough data to find it. 
+
+--
+
+This result is called a **false negative finding** (or type II error): an effect was not detected that exists in reality.
+
+---
+
+## What is we were just unlucky? **Sampling error** could also be the reason we don't find a significant result.
+
+```{r, echo = FALSE}
+knitr::include_app("https://kparrish92.shinyapps.io/pa_demo/", height = "600px")
+```
+
+---
+
+class: title-slide-section, middle
+
+### If we repeat the random sampling **100 times**, we would only find a significant difference **11%** of the time.
+
+--
+
+### For this reason, we say that the **power** of the sample size 10 is .11.
+
+--
+
+### We want it to be **0.80**
+
+---
+
+# What happes if we increase sample size? 
+
+```{r, echo=FALSE}
+# Create a function to run a single power analysis, given two samples, a number of desired iterations (i) and the size of group 1 (n1) and group 2 (n2)
+power_analysis_single_ul = function(s1, s2, i, n1, n2)
+{
+  loop_df = matrix(nrow = i)
+  
+  for(thisRun in 1:i){
+    sample_1 = s1 %>% sample_n(n1)
+    sample_2 = s2 %>% sample_n(n2)
+    t_test = t.test(sample_1$scores,sample_2$scores)
+    loop_df[thisRun] = t_test$p.value
+    
+  }
+  return(sum(loop_df < .05)/i)
+}
+
+# Run the function to check our power
+twen = power_analysis_single_ul(tt_math, ut_math, i = 1000, n1 = 20, n2 = 20)
+thirty = power_analysis_single_ul(tt_math, ut_math, i = 1000, n1 = 30, n2 = 30)
+fourty = power_analysis_single_ul(tt_math, ut_math, i = 1000, n1 = 40, n2 = 40)
+fifty = power_analysis_single_ul(tt_math, ut_math, i = 1000, n1 = 50, n2 = 50)
+sixty = power_analysis_single_ul(tt_math, ut_math, i = 1000, n1 = 60, n2 = 60)
+seven = power_analysis_single_ul(tt_math, ut_math, i = 1000, n1 = 70, n2 = 70)
+eight = power_analysis_single_ul(tt_math, ut_math, i = 1000, n1 = 80, n2 = 80)
+```
+
+We can see that as sample size increases, so does power:
+
+#### The power of the sample size **20** is .red[`r twen`]
+
+--
+
+#### The power of the sample size **30** is .red[`r thirty`].
+
+--
+
+#### The power of the sample size **40** is .red[`r fourty`].
+
+--
+
+#### The power of the sample size **50** is .red[`r fifty`].
+
+--
+
+#### The power of the sample size **60** is .red[`r sixty`].
+
+--
+
+#### The power of the sample size **70** is .red[`r seven`].
+
+--
+
+#### The power of the sample size **80** is .red[`r eight`].
+
+---
+
+class: title-slide-section, middle
+
+## The answer: We need **80 tests** in total from each school to prove our friend wrong.
+
+---
+
+background-image: url(./img/slide7.png)
+background-size: contain
+
+---
+class: title-slide-section, middle
+## The probabability of finding an effect of low powered studies is low, but not zero. What if we get lucky and find one when power is below .80? 
+
+---
+
+background-image: url(./img/golden_ticket.jpg)
+background-size: contain
+
+
+---
+
+class: title-slide-section, middle
+
+## Parte 2: The winner's curse: low powered studies inflate effects.
+
+--
+
+#### Let's go back to the Shiny App
+
+--
+
+Remember, we had power of 0.11. That means 11% of random sampling attemps will return a significant result.
+
+Let's remember the mean differences when we get a significant result.
+
+--
+
+What do you notice? The means are always higher than the true difference of 10.
+
+---
+
+background-image: url(./img/slide7.png)
+background-size: contain
+
+---
+
+# The Winner's Curse: a practical example 
+
+.large[
+My friend at UT wants to advise the University on how to improve math scores.
+]
+
+--
+
+.large[
+They are open to investing **$10,000 for each point** that separates the schools.
+]
+
+---
+
+# The Winner's Curse: un ejemplo práctico.
+
+If our power was **0.4**, significant differences on average would be **13.5 points** 
+
+--
+
+We would spend, then an extra 35% than necessary (*$135,000* vs *$100,000*)
+--
+
+```{r}
+i = 1000
+loop_df = matrix(nrow = i, ncol = 2)
+  for(thisRun in 1:i){
+    sample_1 = tt_math %>% sample_n(30)
+    sample_2 = ut_math %>% sample_n(30)
+    t_test = t.test(sample_1$scores,sample_2$scores)
+    loop_df[thisRun, 1] = t_test$p.value
+    loop_df[thisRun, 2] = mean(sample_1$scores)-mean(sample_2$scores)
+  }
+results = loop_df %>% as.data.frame() %>% 
+  rename("p_value" = "V1") %>%  
+  rename("mean_difference" = "V2") %>% 
+  filter(p_value < .05)
+nrow(results)/i # power
+mean(results$mean_difference) # mean effect size
+```
+
+---
+
+# Conclusion
+
+.large[Statistical power is an important issue in experimental research.]
+
+--
+
+.large[Low statistical power increases the likelihood of **false negative** results.
+
+Even when low power studies find an effect, it is **inflated**.]
+
+--
+
+.large[We can reduce the negative effects of low power by determining what is the smallest effect that is theoretically important.].

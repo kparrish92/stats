@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Week 2: Statistical Power</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kyle Parrish" />
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rutgers-fonts.css" rel="stylesheet" />
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="my-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Week 2: Statistical Power
+]
+.subtitle[
+## Statistics for Linguists
+]
+.author[
+### Kyle Parrish
+]
+.date[
+### Goethe Uni Frankurt</br>Summer 2025</br>Last update: 2025-05-07
+]
+
+---
+
+
+
+
+
+
+
+# Statistical Power
+
+--
+
+.large[
+.pull-left[
+Power or statistical power refers to the .blue[probability of detecting an effect] in an experiment given a given amount of data.
+
+**Low power has important consequences**
+]]
+
+--
+
+.large[
+.pull-left[
+**False negatives**: Low potency leads to a large number of false negatives.
+
+**The Winner's Curse**: Low-power studies that do find an effect are (almost) guaranteed to overestimate it.
+]]
+
+---
+
+class: title-slide-section, middle
+
+## Part 1: Lower power causes a higher proportion of **false negative** results.
+
+---
+
+background-image: url(./img/fp.png)
+background-size: contain
+
+---
+
+
+background-image: url(./img/slide1.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide2.png)
+background-size: contain
+
+---
+
+
+background-image: url(./img/slide3.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide4.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide5.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide6.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide7.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide8.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide9.png)
+background-size: contain
+
+---
+
+background-image: url(./img/slide10.png)
+background-size: contain
+
+---
+
+class: title-slide-section, middle
+
+### I believe Texas Tech test scores are **10 points higher** on average.
+
+--
+
+### How many tests do we need to “get” from each location?
+
+---
+
+# Let's simulate the theft!
+
+--
+
+.large[
+**Simulate the entire population**
+
+Suppose there are **500** exams at each site.
+
+Average score at Texas Tech = .red[75] points.
+
+Average score at UT Austin = .orange[65] points.
+]
+
+--
+
+
+```r
+# Load libraries 
+library(tidyverse)
+# Set the seed so that we can reproduce the simulation exactly
+set.seed(920)
+# Set the level of variation 
+sd_for_all = 20
+
+## Simulating Texas Tech math scores
+tt_math = data.frame(scores = rnorm(n = 500, mean = 75, sd = sd_for_all)) %&gt;% 
+  mutate(source = "texas_tech")
+
+## Simulating UT Austin math scores
+ut_math = data.frame(scores = rnorm(n = 500, mean = 65, sd = sd_for_all)) %&gt;% 
+  mutate(source = "ut_austin")
+```
+
+---
+
+# Let's simulate the theft!
+
+--
+.large[
+Now, we simulate taking a **sample** from this population.
+
+When we take a sample, we **randomly** draw data points from a population.
+
+In this example, we draw 10 rows from each of the population of 500.
+]
+--
+
+
+```r
+# Specify here what your guess is - how many tests do we need?
+guess = 10
+# Set the seed so that we can reproduce the simulation exactly
+set.seed(4)
+# Extract a number of rows from the underlying distribution equal to `guess`
+tt_sample = sample_n(tt_math, size = guess)
+ut_sample = sample_n(ut_math, size = guess)
+# Calculate the mean difference between the extracted samples - remember the true difference is 10
+mean(tt_sample$scores)-mean(ut_sample$scores)
+```
+
+```
+## [1] 9.048622
+```
+
+--
+
+The difference, 9.05, is less than the true difference of 10 points.
+
+---
+
+# Let's simulate the theft!
+
+--
+.large[
+Now the question is: is this difference significant or is it simply due to chance?
+]
+
+--
+
+To answer, we will use a .blue [t-test] to decide. This test analyzes whether we can conclude that there are differences between two data sets.
+
+--
+
+**The decision rule using the .blue[p-value]** 
+
+If .green[p &lt; .05], we say there is a .green[significant difference].
+
+If .blue[p &gt; .05], we say the result is .blue[not significant].
+
+---
+
+# Let's simulate the theft!
+
+.large[
+Let's perform the t-test in R:
+]
+
+--
+
+
+```r
+t.test(tt_sample$scores, ut_sample$scores)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  tt_sample$scores and ut_sample$scores
+## t = 1.8224, df = 17.065, p-value = 0.08596
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -1.423985 19.521229
+## sample estimates:
+## mean of x mean of y 
+##  73.61230  64.56368
+```
+
+--
+
+The p-value is 0.09. **What do we conclude?**
+
+--
+
+We did not find **any evidence** that Texas Tech is better at math.
+--
+
+...but we know that there is a difference in reality! We just did not have enough data to find it. 
+
+--
+
+This result is called a **false negative finding** (or type II error): an effect was not detected that exists in reality.
+
+---
+
+## What is we were just unlucky? **Sampling error** could also be the reason we don't find a significant result.
+
+&lt;iframe src="https://kparrish92.shinyapps.io/pa_demo/?showcase=0" width="100%" height="600px" data-external="1"&gt;&lt;/iframe&gt;
+
+---
+
+class: title-slide-section, middle
+
+### If we repeat the random sampling **100 times**, we would only find a significant difference **11%** of the time.
+
+--
+
+### For this reason, we say that the **power** of the sample size 10 is .11.
+
+--
+
+### We want it to be **0.80**
+
+---
+
+# What happes if we increase sample size? 
+
+
+
+We can see that as sample size increases, so does power:
+
+#### The power of the sample size **20** is .red[0.269]
+
+--
+
+#### The power of the sample size **30** is .red[0.419].
+
+--
+
+#### The power of the sample size **40** is .red[0.507].
+
+--
+
+#### The power of the sample size **50** is .red[0.603].
+
+--
+
+#### The power of the sample size **60** is .red[0.718].
+
+--
+
+#### The power of the sample size **70** is .red[0.765].
+
+--
+
+#### The power of the sample size **80** is .red[0.832].
+
+---
+
+class: title-slide-section, middle
+
+## The answer: We need **80 tests** in total from each school to prove our friend wrong.
+
+---
+
+background-image: url(./img/slide7.png)
+background-size: contain
+
+---
+class: title-slide-section, middle
+## The probabability of finding an effect of low powered studies is low, but not zero. What if we get lucky and find one when power is below .80? 
+
+---
+
+background-image: url(./img/golden_ticket.jpg)
+background-size: contain
+
+
+---
+
+class: title-slide-section, middle
+
+## Parte 2: The winner's curse: low powered studies inflate effects.
+
+--
+
+#### Let's go back to the Shiny App
+
+--
+
+Remember, we had power of 0.11. That means 11% of random sampling attemps will return a significant result.
+
+Let's remember the mean differences when we get a significant result.
+
+--
+
+What do you notice? The means are always higher than the true difference of 10.
+
+---
+
+background-image: url(./img/slide7.png)
+background-size: contain
+
+---
+
+# The Winner's Curse: a practical example 
+
+.large[
+My friend at UT wants to advise the University on how to improve math scores.
+]
+
+--
+
+.large[
+They are open to investing **$10,000 for each point** that separates the schools.
+]
+
+---
+
+# The Winner's Curse: un ejemplo práctico.
+
+If our power was **0.4**, significant differences on average would be **13.5 points** 
+
+--
+
+We would spend, then an extra 35% than necessary (*$135,000* vs *$100,000*)
+--
+
+
+```r
+i = 1000
+loop_df = matrix(nrow = i, ncol = 2)
+  for(thisRun in 1:i){
+    sample_1 = tt_math %&gt;% sample_n(30)
+    sample_2 = ut_math %&gt;% sample_n(30)
+    t_test = t.test(sample_1$scores,sample_2$scores)
+    loop_df[thisRun, 1] = t_test$p.value
+    loop_df[thisRun, 2] = mean(sample_1$scores)-mean(sample_2$scores)
+  }
+results = loop_df %&gt;% as.data.frame() %&gt;% 
+  rename("p_value" = "V1") %&gt;%  
+  rename("mean_difference" = "V2") %&gt;% 
+  filter(p_value &lt; .05)
+nrow(results)/i # power
+```
+
+```
+## [1] 0.402
+```
+
+```r
+mean(results$mean_difference) # mean effect size
+```
+
+```
+## [1] 13.53339
+```
+
+---
+
+# Conclusion
+
+.large[Statistical power is an important issue in experimental research.]
+
+--
+
+.large[Low statistical power increases the likelihood of **false negative** results.
+
+Even when low power studies find an effect, it is **inflated**.]
+
+--
+
+.large[We can reduce the negative effects of low power by determining what is the smallest effect that is theoretically important.].
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
