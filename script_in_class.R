@@ -1,7 +1,4 @@
 #set.seed(1)
-
-1+1
-1+
   
 mean_school_a = 80
 mean_school_b = 70 # true mean difference is 10 or .5 standard deviations (cohen's d)
