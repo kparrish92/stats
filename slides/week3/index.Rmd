@@ -1,0 +1,241 @@
+---
+title: "Week 3: Data Visualization"
+subtitle: 'Statistics for Linguists'
+author  : "Kyle Parrish"
+date    : "Goethe Uni Frankurt</br>Summer 2025</br>Last update: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, hygge, my-css.css, rutgers-fonts]
+    lib_dir: libs
+    nature:
+      countIncrementalSlides: false
+      ratio: 16:9
+---
+
+```{r, include = FALSE}
+library(here)
+library(tidyverse)
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+# Data visualization
+
+--
+
+.large[
+.pull-left[
+Data visualization is a vital step in any statistical analysis.
+
+**Visualization can give us important insights regarding relationships**
+]]
+
+--
+
+.large[
+.pull-right[
+**Ggplot 2**: The R package used in most plots. See the ggplot cheatsheet [here](https://rstudio.github.io/cheatsheets/data-visualization.pdf) 
+
+Different plot types are ideal for categorical and continuous variables.
+]]
+
+---
+
+class: title-slide-section, middle
+
+## Part 1: Basics 
+
+---
+
+## Part 1: Basics 
+
+
+.large[
+Ggplot is a function in R that requires for data, mapping (coordinates), and a plot type.
+]
+
+--
+
+.large[
+We will use `mtcars` as an example data set. It is a built in data set in R that contains many different variable types.
+]
+
+
+```{r}
+glimpse(mtcars)
+```
+
+---
+
+class: title-slide-section, middle
+
+## Part 2: One variable  
+
+---
+
+## Part 2: One variable  
+
+.pull-left[
+**A Histogram** is often use to visualize a distribution. 
+
+This plot shows the relative quantity of data points between a certain interval (bin) 
+
+We plot the variable *cyl* here, which only has 4, 6 or 8.
+]
+
+
+--
+
+.pull-right[
+```{r, out.width = '400px', message = FALSE}
+# Histogram
+mtcars %>% 
+  ggplot(aes(x = cyl)) + geom_histogram()
+```
+]
+
+---
+
+
+## Part 2: One variable  
+
+.pull-left[
+**A dotplot** also plots a one variable distribution.
+
+This plot shows each the same information as the histogram, but with clearer distinctions of individual data points (better for small data sets).
+]
+
+--
+
+.pull-right[
+```{r, out.width = '400px', message = FALSE}
+# Histogram
+mtcars %>% 
+  ggplot(aes(x = cyl)) + geom_dotplot()
+```
+]
+
+
+---
+
+## Part 3: Two variables (one categorical one continuous)
+
+.pull-left[
+**A barplot** compares quantities of two categories.
+]
+
+--
+
+.pull-right[
+```{r, out.width = '400px', message = FALSE}
+# Histogram
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarise(mean_mpg = mean(mpg)) %>% 
+  ggplot(aes(y = mean_mpg, x = as.factor(cyl))) + geom_col()
+```
+]
+
+---
+
+## Part 3: Two variables (one categorical one continuous)
+
+.pull-left[
+**A boxplot** shows the distribution of values in various categories. The box itself contains 50% of the data points while the median is line within the box.
+]
+
+--
+
+.pull-right[
+```{r, out.width = '400px', message = FALSE}
+# Histogram
+mtcars %>% 
+  ggplot(aes(y = mpg, x = as.factor(cyl))) + geom_boxplot()
+```
+]
+
+---
+
+## Part 4: Two variables (one categorical, one continuous)
+
+.pull-left[
+**A scatter plot** shows the relationship between two continuous variables.
+
+Here we plot the relationship between mpg and weight.
+]
+
+--
+
+.pull-right[
+```{r, out.width = '400px', message = FALSE}
+# Histogram
+mtcars %>% 
+  ggplot(aes(y = mpg, x = wt)) + geom_point()
+```
+]
+
+---
+
+## Part 4: Two variables (one categorical, one continuous)
+
+.pull-left[
+**A line plot** also shows the relationship between two continuous variables.
+
+We plot a line of best fit to the data points.
+]
+
+--
+
+.pull-right[
+```{r, out.width = '400px', message = FALSE}
+# Histogram
+mtcars %>% 
+  ggplot(aes(y = mpg, x = wt)) + geom_smooth(method = "lm")
+```
+]
+
+---
+
+
+## Part 4: Two variables (one categorical, one continuous)
+
+.pull-left[
+Ggplots also have layers - we can add both the points and line of best fit to the plot.
+]
+
+--
+
+.pull-right[
+```{r, out.width = '400px', message = FALSE}
+# Histogram
+mtcars %>% 
+  ggplot(aes(y = mpg, x = wt)) + geom_point() + geom_smooth(method = "lm")
+```
+]
+
+---
+
+## Part 4: Three variables (Two categorical, one continuous)
+
+.pull-left[
+We can also separate categories within the previous plot - let's say we want to look at whether the relationship between weight and mpg is similar for different cylinder types.
+]
+
+--
+
+.pull-right[
+```{r, out.width = '400px', message = FALSE, warning=FALSE}
+# Histogram
+mtcars %>% 
+  ggplot(aes(y = mpg, x = wt, color = as.factor(cyl))) + geom_point() + geom_smooth(method = "lm")
+```
+]

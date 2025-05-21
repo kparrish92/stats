@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Week 3: Data Visualization</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kyle Parrish" />
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rutgers-fonts.css" rel="stylesheet" />
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="my-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Week 3: Data Visualization
+]
+.subtitle[
+## Statistics for Linguists
+]
+.author[
+### Kyle Parrish
+]
+.date[
+### Goethe Uni Frankurt</br>Summer 2025</br>Last update: 2025-05-20
+]
+
+---
+
+
+
+
+
+
+
+# Data visualization
+
+--
+
+.large[
+.pull-left[
+Data visualization is a vital step in any statistical analysis.
+
+**Visualization can give us important insights regarding relationships**
+]]
+
+--
+
+.large[
+.pull-right[
+**Ggplot 2**: The R package used in most plots. See the ggplot cheatsheet [here](https://rstudio.github.io/cheatsheets/data-visualization.pdf) 
+
+Different plot types are ideal for categorical and continuous variables.
+]]
+
+---
+
+class: title-slide-section, middle
+
+## Part 1: Basics 
+
+---
+
+## Part 1: Basics 
+
+
+.large[
+Ggplot is a function in R that requires for data, mapping (coordinates), and a plot type.
+]
+
+--
+
+.large[
+We will use `mtcars` as an example data set. It is a built in data set in R that contains many different variable types.
+]
+
+
+
+```r
+glimpse(mtcars)
+```
+
+```
+## Rows: 32
+## Columns: 11
+## $ mpg  &lt;dbl&gt; 21.0, 21.0, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 17.8,…
+## $ cyl  &lt;dbl&gt; 6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8,…
+## $ disp &lt;dbl&gt; 160.0, 160.0, 108.0, 258.0, 360.0, 225.0, 360.0, 146.7, 140.8, 16…
+## $ hp   &lt;dbl&gt; 110, 110, 93, 110, 175, 105, 245, 62, 95, 123, 123, 180, 180, 180…
+## $ drat &lt;dbl&gt; 3.90, 3.90, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92, 3.92,…
+## $ wt   &lt;dbl&gt; 2.620, 2.875, 2.320, 3.215, 3.440, 3.460, 3.570, 3.190, 3.150, 3.…
+## $ qsec &lt;dbl&gt; 16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, 20.00, 22.90, 18…
+## $ vs   &lt;dbl&gt; 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0,…
+## $ am   &lt;dbl&gt; 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0,…
+## $ gear &lt;dbl&gt; 4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3,…
+## $ carb &lt;dbl&gt; 4, 4, 1, 1, 2, 1, 4, 2, 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2,…
+```
+
+---
+
+class: title-slide-section, middle
+
+## Part 2: One variable  
+
+---
+
+## Part 2: One variable  
+
+.pull-left[
+**A Histogram** is often use to visualize a distribution. 
+
+This plot shows the relative quantity of data points between a certain interval (bin) 
+
+We plot the variable *cyl* here, which only has 4, 6 or 8.
+]
+
+
+--
+
+.pull-right[
+
+```r
+# Histogram
+mtcars %&gt;% 
+  ggplot(aes(x = cyl)) + geom_histogram()
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-3-1.png" width="400px" /&gt;
+]
+
+---
+
+
+## Part 2: One variable  
+
+.pull-left[
+**A dotplot** also plots a one variable distribution.
+
+This plot shows each the same information as the histogram, but with clearer distinctions of individual data points (better for small data sets).
+]
+
+--
+
+.pull-right[
+
+```r
+# Histogram
+mtcars %&gt;% 
+  ggplot(aes(x = cyl)) + geom_dotplot()
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-4-1.png" width="400px" /&gt;
+]
+
+
+---
+
+## Part 3: Two variables (one categorical one continuous)
+
+.pull-left[
+**A barplot** compares quantities of two categories.
+]
+
+--
+
+.pull-right[
+
+```r
+# Histogram
+mtcars %&gt;% 
+  group_by(cyl) %&gt;% 
+  summarise(mean_mpg = mean(mpg)) %&gt;% 
+  ggplot(aes(y = mean_mpg, x = as.factor(cyl))) + geom_col()
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-5-1.png" width="400px" /&gt;
+]
+
+---
+
+## Part 3: Two variables (one categorical one continuous)
+
+.pull-left[
+**A boxplot** shows the distribution of values in various categories. The box itself contains 50% of the data points while the median is line within the box.
+]
+
+--
+
+.pull-right[
+
+```r
+# Histogram
+mtcars %&gt;% 
+  ggplot(aes(y = mpg, x = as.factor(cyl))) + geom_boxplot()
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-6-1.png" width="400px" /&gt;
+]
+
+---
+
+## Part 4: Two variables (one categorical, one continuous)
+
+.pull-left[
+**A scatter plot** shows the relationship between two continuous variables.
+
+Here we plot the relationship between mpg and weight.
+]
+
+--
+
+.pull-right[
+
+```r
+# Histogram
+mtcars %&gt;% 
+  ggplot(aes(y = mpg, x = wt)) + geom_point()
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-7-1.png" width="400px" /&gt;
+]
+
+---
+
+## Part 4: Two variables (one categorical, one continuous)
+
+.pull-left[
+**A line plot** also shows the relationship between two continuous variables.
+
+We plot a line of best fit to the data points.
+]
+
+--
+
+.pull-right[
+
+```r
+# Histogram
+mtcars %&gt;% 
+  ggplot(aes(y = mpg, x = wt)) + geom_smooth(method = "lm")
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-8-1.png" width="400px" /&gt;
+]
+
+---
+
+
+## Part 4: Two variables (one categorical, one continuous)
+
+.pull-left[
+Ggplots also have layers - we can add both the points and line of best fit to the plot.
+]
+
+--
+
+.pull-right[
+
+```r
+# Histogram
+mtcars %&gt;% 
+  ggplot(aes(y = mpg, x = wt)) + geom_point() + geom_smooth(method = "lm")
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-9-1.png" width="400px" /&gt;
+]
+
+---
+
+## Part 4: Three variables (Two categorical, one continuous)
+
+.pull-left[
+We can also separate categories within the previous plot - let's say we want to look at whether the relationship between weight and mpg is similar for different cylinder types.
+]
+
+--
+
+.pull-right[
+
+```r
+# Histogram
+mtcars %&gt;% 
+  ggplot(aes(y = mpg, x = wt, color = as.factor(cyl))) + geom_point() + geom_smooth(method = "lm")
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-10-1.png" width="400px" /&gt;
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
