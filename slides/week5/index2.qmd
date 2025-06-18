@@ -1,0 +1,2057 @@
+---
+title: "Week 5: The Linear Model"
+subtitle: 'Statistics for Linguists'
+author  : "Kyle Parrish"
+date    : "Goethe Uni Frankurt</br>Summer 2025</br>Last update: `r Sys.Date()`"
+format: revealjs
+editor: visual
+---
+
+```{r, include = FALSE}
+# Packages --------------------------------------------------------------------
+
+# Custom
+library("ds4ling")
+library("lingStuff")
+library("untidydata")
+library("academicWriteR")
+
+# Tidyverse
+library("dplyr")
+library("tidyr")
+library("readr")
+library("purrr")
+library("here")
+library("forcats")
+library("stringr")
+library("glue")
+
+# Modeling
+library("lme4")
+library("brms")
+
+# Plotting
+library("ggplot2")
+library("patchwork")
+library("ggridges")
+library("ggrepel")
+library("viridis")
+library("ggfortify")
+
+# Misc
+library("knitr")
+library("kableExtra")
+library("latex2exp")
+library("broom")
+library("fGarch")
+library("equatiomatic")
+library("countdown")
+library("tiktokrmd")
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+```{r}
+#| echo: false
+source("_common.R")
+```
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+.center[
+## Slides are created from open course notes by Joseph Casillas [here](https://www.ds4ling.jvcasillas.com/slides/05_lm/01_bivariate_regression/#/title-slide/=)]
+
+---
+
+# Linear Regression
+
+```{r include=FALSE}
+knitr::opts_chunk$set(cache=F, warning=FALSE, message=FALSE)
+library(arm)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+options(scipen = 0)
+```
+
+.pull-left[
+.large[
+So far, we have been focusing on **comparing two means** (e.g. is class A better than class B at math).
+]
+]
+
+--
+
+.pull-right[
+.large[
+But what about .red[confounding variables?]
+
+What if the differences in math scores between two schools are not simply because one school is better, but because of another variable (socio-economic status)?
+
+For this we can use a linear model - specifically a multivariate linear regression. 
+
+It can consider several variables at once! 
+]]
+
+---
+
+# What are models?  
+
+.large[
+> "All models are wrong, but some are useful." <br><br>
+George Box
+
+]
+
+.large[
+**Models** simplify reality for purposes of understanding or prediction.  
+]
+
+--
+
+.large[
+
+Statistical modeling has these two sometimes divergent goals:
+
+- .green[*Description*]: using a model to describe the relationship between an outcome variable of interest and one or more predictor variables.
+
+
+- .red[*Prediction*]: using a model to predict unknown instances of the outcome variable such that out-of-sample predictive error is minimized.
+]
+
+---
+
+# The basics
+
+.pull-left[
+.large[
+A linear model is *parametric* because we assume that the relationship between two variables is linear and can be defined by the *parameters* of a line---an .green[intercept] and .red[slope].  We'll start by considering a simple linear model.
+]]
+
+--
+
+.pull-right[
+```{r}
+mtcars %>% 
+ggplot(aes(x = mpg, y = wt)) + geom_point() + geom_smooth(method = "lm")
+```
+]
+
+---
+
+
+### Simple linear model
+
+- A simple linear model has an outcome, $y$, and one predictor, $x$. 
+$$
+- y_i = \beta_0 + \beta_1x_i + \epsilon_i,
+$$
+
+[Some examples]{.p-font style="font-size: 1.2em; color: #666;"}
+
+::: {.columns}
+::: {.column}
+- weight ~ height
+- IQ ~ age
+- ice cream sold ~ temperature
+- RT ~ group
+:::
+
+::: {.column .fragment}
+- vocab size ~ age
+- vowel duration ~ stress
+- target fixations ~ grammatical gender
+- F1 ~ vowel
+:::
+:::
+
+. . .
+
+[Note: We interpret the `~` as "as a function of".]{style="font-size: 0.7em;"}
+
+---
+
+## {background-image="./index_files/img/lm_ex1.png" background-size="contain"}
+
+---
+
+## {background-image="./index_files/img/lm_ex2.png" background-size="contain"}
+
+---
+
+## Linear algebra {.smaller}
+
+### Remember middle school?
+
+::: {.closelist}
+- It really is the same thing. 
+- You probably saw something like this:
+:::
+
+$$y = a + bx$$
+
+::: {.closelist}
+- ...or maybe some other variation (i.e., y = mx + b) where [**bx**]{.emph} is the *slope* and [a]{color="blue"} is the point where the line crosses the y-axis when x = 0, i.e. the *y-intercept*.
+- If you know two of the variables, you can solve for the third... 
+assume x = 2. Solve for y.
+:::
+
+::: {.closep style="font-size: 0.8em;"}
+$$y = 50 + 10x$$
+[$$y = 50 + 10 \times 2$$]{.fragment}
+[$$y = 50 + 20$$]{.fragment}
+[$$y = 70$$]{.fragment}
+:::
+
+---
+
+## 
+
+[Linear algebra]{.emph .p-font style="font-size: 1.75em;"}
+
+### Cartesian coordinates
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: cartesian_coord_plot1
+#| fig-asp: 0.8
+y_hashes <- data.frame(
+  x = -0.15, 
+  x_end = 0.15, 
+  y_axis = seq(-5, 5, 1), 
+  label = 'y-axis'
+)
+
+x_hashes <- data.frame(
+  y = -0.15, 
+  y_end = 0.15, 
+  x_axis = seq(-5, 5, 1), 
+  label = 'x-axis'
+)
+
+coords_p1 <- tribble(
+  ~'x', ~'y', ~'label', 
+    1,    4,   'y-axis', 
+    4,   -1,   'x-axis'
+  ) |>
+  ggplot() + 
+  aes(x = x, y = y, label = label, color = label) + 
+  geom_text(size = 10, show.legend = FALSE) + 
+  scale_x_continuous(
+    breaks = seq(-5, 5, 1), 
+    labels = seq(-5, 5, 1)
+  ) + 
+  scale_y_continuous(
+    breaks = seq(-5, 5, 1), 
+    labels = seq(-5, 5, 1)
+  ) +
+  geom_vline(xintercept = 0) + 
+  geom_hline(yintercept = 0) + 
+  geom_segment(
+    data = y_hashes, 
+    aes(
+      x = x, xend = x_end, 
+      y = y_axis, yend = y_axis, 
+      label = NULL, color = NULL
+    ), 
+    show.legend = FALSE
+  ) +
+  geom_segment(
+    data = x_hashes, 
+    aes(
+      x = x_axis, xend = x_axis, 
+      y = y, yend = y_end, 
+      label = NULL, color = NULL), 
+    show.legend = FALSE
+  ) +
+  scale_color_brewer(palette = "Set1") + 
+  ds4ling_bw_theme(base_size = 24)
+
+coords_p1
+```
+:::
+
+::: {.column}
+```{r}
+#| label: cartesian_coord_plot2
+#| fig-asp: 0.8
+coords_p1 + geom_abline(
+  intercept = 0, 
+  slope = 1, 
+  linewidth = 1.5,
+  lty = 1, 
+  color = "darkred"
+  )
+```
+:::
+:::
+
+---
+
+## 
+
+[Linear algebra]{.emph .p-font style="font-size: 1.75em;"}
+
+### Cartesian coordinates
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: cartesian_coord_plot3
+#| fig-asp: 0.8
+coords_p1 + geom_abline(
+  intercept = 1, 
+  slope = 3, 
+  linewidth = 1.5,
+  lty = 1, 
+  color = "darkred"
+  )
+```
+:::
+
+::: {.column}
+```{r}
+#| label: cartesian_coord_plot4
+#| fig-asp: 0.8
+coords_p1 + geom_abline(
+  intercept = 2, 
+  slope = -1, 
+  linewidth = 1.5,
+  lty = 1, 
+  color = "darkred"
+  )
+```
+:::
+:::
+
+---
+
+## {background-color="#000" background-image="https://www.jvcasillas.com/media/rstats/memes/lm_general.png" background-position="95% 50%" background-size="750px" data-menu-title="Bivariate regression" .center}
+
+[The linear model]{.p-font style="font-size: 1.75em;"}
+
+### [**Bivariate regression**]{.emph}
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+::: {.closelist}
+- The linear model is basically the same as linear algebra, with two subtle differences
+  1. We fit the line through data points (measurements, observations)
+  2. We use slightly different terminology
+:::
+
+[$$\color{blue}{response} \sim intercept + (slope * \color{red}{predictor})$$]{style="font-size: 1.1em;"}
+
+. . .
+
+[$$\color{blue}{\hat{y}} = a + b\color{red}{x}$$]{style="font-size: 1.1em;"}
+
+. . .
+
+::: {.closelist}
+- We call our dependent variable the [response variable]{color="blue"} (or criterion)
+- Our independent variables are called [**predictors**]{.emph}
+- The intercept and the slope are *coefficients*
+  - These are the meat and potatoes of the linear model
+  - They are also called *parameter estimates*
+:::
+
+. . .
+
+<mybr>
+
+### How do we know the line of best fit?
+
+---
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+<br>
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: best_fit1
+#| fig-asp: 0.8
+
+coords_p2_labels <- tribble(
+  ~'x', ~'y', ~'label', 
+    1,    4,   'y-axis', 
+    4,   -1,   'x-axis'
+  )
+
+coords_p2_points <- tribble(
+  ~'x', ~'y',
+    1,    1,
+    2,    2, 
+    3,    3
+  )
+
+coords_p2 <- ggplot(coords_p2_labels) + 
+  aes(x = x, y = y, label = label) + 
+  geom_text(size = 8, show.legend = FALSE) + 
+  geom_point(
+    data = coords_p2_points,  
+    aes(x = x, y = y, label = NULL), 
+    color = "blue", size = 3
+  ) +
+  scale_x_continuous(
+    breaks = seq(-5, 5, 1), 
+    labels = seq(-5, 5, 1)
+  ) + 
+  scale_y_continuous(
+    breaks = seq(-5, 5, 1), 
+    labels = seq(-5, 5, 1)
+  ) +
+  geom_vline(xintercept = 0) + 
+  geom_hline(yintercept = 0) + 
+  geom_segment(
+    data = y_hashes, 
+    aes(
+      x = x, xend = x_end, 
+      y = y_axis, yend = y_axis, 
+      label = NULL, color = NULL), 
+    show.legend = FALSE
+  ) +
+  geom_segment(
+    data = x_hashes, 
+    aes(
+      x = x_axis, xend = x_axis,  
+      y = y, yend = y_end, 
+      label = NULL, color = NULL), 
+    show.legend = FALSE
+  ) + 
+  scale_color_brewer(palette = "Set1") +
+  ds4ling_bw_theme(base_size = 24)
+
+coords_p2
+```
+:::
+
+::: {.column}
+```{r}
+#| label: best_fit2
+#| fig-asp: 0.8
+coords_p2 + geom_abline(intercept = 0, slope = 1, color = "darkred")
+```
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+<br>
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: best_fit3
+#| fig-asp: 0.8
+
+ggplot(coords_p2_points) + 
+  aes(x = x, y = y) + 
+  coord_cartesian(xlim = c(0, 4), ylim = c(0, 4)) + 
+  geom_vline(xintercept = 0) + 
+  geom_hline(yintercept = 0) + 
+  geom_hline(
+    yintercept = mean(coords_p2_points$y), lty = 1, 
+    color = 'blue', linewidth = 1.5
+  ) +
+  geom_abline(
+    intercept = 0, slope = 1, lty = 2, 
+    color = "darkred", linewidth = 0.7
+  ) + 
+  geom_segment(
+    aes(x = 1, xend = 1, y = 1, yend = 2), 
+    lty = 3, linewidth = 0.8
+  ) + 
+  geom_segment(
+    aes(x = 3, xend = 3, y = 2, yend = 3), 
+    lty = 3, linewidth = 0.8
+  ) + 
+  geom_point(color = 'blue', fill = 'grey70', pch = 21, size = 6) + 
+  annotate("text", x = 0.5, y = 1, label = "(1, 1)", lwd = 6, 
+    color = 'darkgrey') +
+  annotate("text", x = 3.5, y = 3, label = "(3, 3)", lwd = 6, 
+    color = 'darkgrey') +
+  ds4ling_bw_theme(base_size = 24)
+```
+:::
+
+::: {.column}
+<center>
+```{r}
+#| label: best_fit_table1
+#| results: 'asis'
+kable(coords_p2_points, format = "html")
+```
+</center>
+
+- If we tried to predict using just the [mean of `y`]{color="blue"} we would be right once
+- We'd miss badly for [(1, 1)]{color="#666"} and [(3, 3)]{color="#666"}
+- The [line of best fit]{.emph} is that which reduces the distance between the *predicted values* of `y` and the *observed values* of `y`. 
+:::
+:::
+
+---
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+### Measurement error
+
+::: {.closelist}
+- We rarely (never) find a perfectly linear relationship in our data
+  - Most relationships are not perfectly linear
+  - Our measurements are not perfect (VOT, formants, durations, RT)
+  - There is error in everything (normal distribution)
+- We account for [error]{.emph} in our models
+:::
+
+### $$\hat{y} = a + bx + \color{red}{\epsilon}$$
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+### Measurement error
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: best_fit4
+#| fig-asp: 0.8
+imperf_points1 <- tribble(
+  ~'x', ~'y', ~'fitted1', ~'fitted2', 
+    1,    2,    1.6,        0.75, 
+    2,    1,    2.7,        1.25, 
+    3,    3,    3.8,        1.75
+)
+
+ggplot(imperf_points1) + 
+  aes(x = x, y = y) + 
+  coord_cartesian(xlim = c(0, 4), ylim = c(0, 4)) + 
+  geom_vline(xintercept = 0) + 
+  geom_hline(yintercept = 0) + 
+  geom_hline(
+    yintercept = mean(imperf_points1$y), 
+    lty = 1, color = 'blue', linewidth = 1.5, alpha = 0.3
+  ) +
+  geom_point(color = 'blue', fill = 'grey70', pch = 21, size = 6) + 
+  ds4ling_bw_theme(base_size = 20)
+
+```
+:::
+
+::: {.column}
+- Again, we can see that the [mean of `y`]{color="blue"} isn't the best solution. 
+  - It can summarize the `y` data
+  - It cannot explain the relationship between `x` and `y`.
+- We need a method to assess how well a given line fits the data
+- We need a method to determine the optimal intercept and slope (the line of best fit)
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+### More on error
+
+```{r, fig.show="hold", out.width="33%"}
+
+imperf_plot0 <- ggplot(imperf_points1) + 
+  aes(x = x, y = y) + 
+  coord_cartesian(xlim = c(0, 4), ylim = c(0, 4)) + 
+  geom_vline(xintercept = 0) + 
+  geom_hline(yintercept = 0) + 
+  geom_hline(
+    yintercept = mean(imperf_points1$y), 
+    lty = 1, color = 'blue', linewidth = 1.5, alpha = 0.1
+  ) +
+  ds4ling_bw_theme(base_size = 12)
+
+imperf_plot1 <- imperf_plot0 + 
+  geom_abline(
+    intercept = 0.5, slope = 1.1, 
+    lty = 2, color = "darkred"
+  ) + 
+  geom_segment(
+    aes(xend = x, yend = fitted1), 
+    lty = 3, linewidth = 0.6
+  ) + 
+  geom_point(color = 'blue', fill = 'grey70', pch = 21, size = 3)
+
+imperf_plot2 <- imperf_plot0 + 
+  geom_abline(
+    intercept = 0.25, slope = 0.5, 
+    lty = 2, color = "darkred"
+  ) +
+  geom_segment(
+    aes(xend = x, yend = fitted2), 
+    lty = 3, linewidth = 0.6
+  ) + 
+  geom_point(color = 'blue', fill = 'grey70', pch = 21, size = 3)
+
+imperf_mod <- lm(y ~ x, data = imperf_points1)
+
+imperf_plot3 <- imperf_plot0 + 
+  geom_abline(
+    intercept = coef(imperf_mod)[1], 
+    slope = coef(imperf_mod)[2], 
+    lty = 2, color = "darkred"
+  ) + 
+  geom_segment(
+    aes(xend = x, yend = fitted(imperf_mod)), 
+    lty = 3, linewidth = 0.6
+  ) + 
+  geom_point(color = 'blue', fill = 'grey70', pch = 21, size = 3)
+
+imperf_plot1
+imperf_plot2
+imperf_plot3
+```
+
+
+
+::: {style="font-size: 0.82em;"}
+- One way to do this is to calculate the 'distance' between predicted y ([ŷ, y-hat]{.emph}) and observed y ([y<sub>i</sub>]{color="blue"}). 
+- If we add up this distance for each observation we can compare it to other lines (i.e., other distances). 
+- The line that produces the shortest distance is the best. 
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+### More on error
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: best_fit6
+#| fig-asp: 0.9
+imperf_plot1a <- imperf_plot1 + 
+  geom_point(color = 'blue', fill = 'grey70', pch = 21, size = 6) + 
+  ds4ling_bw_theme(base_size = 26)
+imperf_plot1a
+```
+:::
+
+::: {.column}
+- The difference between $\hat{y}$ and $y_i$ is called *prediction error*
+- The *total prediction error* (TPE) is the sum of the prediction error of all observations
+- This measurement is not ideal because negative values cancel out the positive ones, thus we square them. 
+- We call this the sum of square of the errors (SSE)
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+### More on error
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: best_fit7
+#| fig-asp: 0.9
+imperf_plot1a + 
+  annotate(
+    geom = "text", 
+    x = 0.85, y = 1.85, 
+    label = "[", size = 18, 
+    color = 'grey70'
+  ) +
+  geom_segment(aes(x = 2.17, xend = 2.17, y = 1, yend = 2.7), 
+    linewidth = 1.7, color = 'grey70') +
+  geom_segment(aes(x = 2.1, xend = 2.19, y = 1, yend = 1), 
+    linewidth = 1.7, color = 'grey70') +
+  geom_segment(aes(x = 2.1, xend = 2.19, y = 2.7, yend = 2.7), 
+    linewidth = 1.7, color = 'grey70') +
+  geom_segment(aes(x = 3.17, xend = 3.17, y = 3, yend = 3.8), 
+    linewidth = 1.7, color = 'grey70') + 
+  geom_segment(aes(x = 3.1, xend = 3.19, y = 3, yend = 3), 
+    linewidth = 1.7, color = 'grey70') +
+  geom_segment(aes(x = 3.1, xend = 3.19, y = 3.8, yend = 3.8), 
+    linewidth = 1.7, color = 'grey70') 
+```
+:::
+
+::: {.column}
+
+```{r, fig.show="hold", out.width="33%"}
+imperf_table1 <- imperf_points1 |> 
+  dplyr::select(x_i = x, y_i = y, y_hat = fitted1) |> 
+  mutate(pred.error = y_i - y_hat, sqrd.error = pred.error ^ 2)
+
+pred_error1 <- sum(imperf_table1$pred.error)
+sqrd_error1 <- sum(imperf_table1$sqrd.error)
+
+imperf_table1 |> 
+  add_row(y_hat = NA) |> 
+  add_row(
+    y_hat = NA, 
+    pred.error = pred_error1, 
+    sqrd.error = sqrd_error1
+  ) |>
+  mutate(
+    x_i = cell_spec(
+      x = x_i, 
+      format = "html", 
+      color = if_else(is.na(x_i), "white", "black")
+    ), 
+    y_i = cell_spec(
+      x = y_i, 
+      format = "html", 
+      color = if_else(is.na(y_i), "white", "black")
+    ), 
+    y_hat = cell_spec(
+      x = y_hat, 
+      format = "html", 
+      color = if_else(is.na(y_hat), "white", "black")
+    )
+  ) |> 
+  kable(format = "html", escape = F) |> 
+  row_spec(4, color = "white") |> 
+  row_spec(5, color = "#cc0033")
+```
+
+- This line is not the best fit for these data because it does not *minimize the sum of the squares of the errors*. 
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+### More on error
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: best_fit8
+#| fig-asp: 0.9
+imperf_plot2a <- imperf_plot2 + 
+  geom_point(color = 'blue', fill = 'grey70', pch = 21, size = 6) + 
+  ds4ling_bw_theme(base_size = 26)
+imperf_plot2a
+```
+:::
+
+::: {.column}
+```{r}
+#| label: best_fit_table3
+#| results: 'asis'
+imperf_table2 <- imperf_points1 |> 
+  dplyr::select(x_i = x, y_i = y, y_hat = fitted2) |> 
+  mutate(pred.error = y_i - y_hat, sqrd.error = pred.error ^ 2)
+
+pred_error2 <- sum(imperf_table2$pred.error)
+sqrd_error2 <- sum(imperf_table2$sqrd.error)
+
+imperf_table2 |> 
+  add_row(y_hat = NA) |> 
+  add_row(
+    y_hat = NA, 
+    pred.error = pred_error2, 
+    sqrd.error = sqrd_error2
+  ) |>
+  mutate(
+    x_i = cell_spec(
+      x = x_i, 
+      format = "html", 
+      color = if_else(is.na(x_i), "white", "black")
+    ), 
+    y_i = cell_spec(
+      x = y_i, 
+      format = "html", 
+      color = if_else(is.na(y_i), "white", "black")
+    ), 
+    y_hat = cell_spec(
+      x = y_hat, 
+      format = "html", 
+      color = if_else(is.na(y_hat), "white", "black")
+    )
+  ) |> 
+  kable(format = "html", escape = F) |> 
+  row_spec(4, color = "white") |> 
+  row_spec(5, color = "#cc0033")
+```
+
+- This line is not the best fit for these data because it does not *minimize the 
+sum of the squares of the errors*. 
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+### More on error
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: best_fit9
+#| fig-asp: 0.9
+imperf_mod <- lm(y ~ x, data = imperf_points1)
+
+imperf_plot_bestfit <- ggplot(imperf_points1) + 
+  aes(x = x, y = y) + 
+  coord_cartesian(xlim = c(0, 4), ylim = c(0, 4)) + 
+  geom_vline(xintercept = 0) + 
+  geom_hline(yintercept = 0) + 
+  geom_hline(
+    yintercept = mean(imperf_points1$y), 
+    lty = 1, color = 'blue', 
+    linewidth = 1.5, alpha = 0.1
+  ) +
+  geom_abline(
+    intercept = coef(imperf_mod)[1], 
+    slope = coef(imperf_mod)[2], 
+    lty = 2, color = "darkred"
+  ) + 
+  geom_segment(
+    aes(xend = x, yend = fitted(imperf_mod)), 
+    lty = 3, linewidth = 1
+  ) +
+  geom_point(color = 'blue', fill = 'grey70', pch = 21, size = 6) + 
+  ds4ling_bw_theme(base_size = 26)
+imperf_plot_bestfit
+```
+:::
+
+::: {.column}
+```{r}
+#| label: best_fit_table4
+#| results: 'asis'
+imperf_table3 <- imperf_points1 |> 
+  dplyr::select(x_i = x, y_i = y) |>
+  mutate(
+    y_hat = fitted(imperf_mod), 
+    pred.error = y_i - y_hat, 
+    sqrd.error = pred.error^2
+  )
+
+pred_error3 <- sum(imperf_table3$pred.error)
+sqrd_error3 <- sum(imperf_table3$sqrd.error)
+
+imperf_table3 |> 
+  add_row(y_hat = NA) |> 
+  add_row(
+    y_hat = NA, 
+    pred.error = pred_error3, 
+    sqrd.error = sqrd_error3
+  ) |>
+  mutate(
+    x_i = cell_spec(
+      x = x_i, 
+      format = "html", 
+      color = if_else(is.na(x_i), "white", "black")
+    ), 
+    y_i = cell_spec(
+      x = y_i, 
+      format = "html", 
+      color = if_else(is.na(y_i), "white", "black")
+    ), 
+    y_hat = cell_spec(
+      x = y_hat, 
+      format = "html", 
+      color = if_else(is.na(y_hat), "white", "black")
+    )
+  ) |> 
+  kable(format = "html", escape = F) |> 
+  row_spec(4, color = "white") |>
+  row_spec(5, color = "#cc0033")
+```
+
+- This line represents a much better fit (1.50 is lower than the SSE of the other lines)
+- So how do we calculate the line the minimizes the sum of squares of the errors?
+:::
+:::
+
+---
+
+## {data-menu-title="Least squares estimation"}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+### Least squares estimation
+
+<br>
+
+[$$b = \frac{\sum{(x_i - \bar{x})(y_i - \bar{y})}}{\sum{(x_i - \bar{x})^2}}$$]{style="font-size: 1.2em;"}
+
+[$$a = \bar{y} - b\bar{x}$$]{style="font-size: 1.2em;"}
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Least squares estimation]{.p-font style="font-size: 1.2em; color: #666"}
+
+::: {.closep style="font-size: 0.8em;"}
+```{r}
+#| label: slope_table
+exp_table <- imperf_points1 |> 
+  mutate(obs = row_number()) |> 
+  dplyr::select(obs, x, y) |> 
+  mutate(
+    `x - xbar` = x - mean(x), 
+    `y - ybar` = y - mean(y), 
+    `(x-xbar)(y-ybar)` = `x - xbar` * `y - ybar`, 
+    `x - xbar^2` = `x - xbar` ^ 2
+  )
+
+x_sum     <- sum(exp_table$x)
+y_sum     <- sum(exp_table$y)
+x_bar     <- mean(exp_table$x)
+y_bar     <- mean(exp_table$y)
+xprod_sum <- sum(exp_table$`(x-xbar)(y-ybar)`)
+xdev_sum  <- sum(exp_table$`x - xbar^2`)
+
+exp_table |> 
+  mutate(obs = as.character(obs)) |> 
+  add_row(obs = NA) |> 
+  add_row(
+    obs = "Sum", 
+    x = x_sum, 
+    y = y_sum, 
+   `(x-xbar)(y-ybar)` = xprod_sum, 
+   `x - xbar^2` = xdev_sum) |> 
+  add_row(obs = "Mean", x = x_bar, y = y_bar) |> 
+  mutate(
+    obs = cell_spec(
+      x = obs, 
+      format = "html", 
+      color = if_else(is.na(obs), "white", "black")
+    ),
+    x = cell_spec(
+      x = x, 
+      format = "html", 
+      color = if_else(is.na(x), "white", "black")
+    ),
+    y = cell_spec(
+      x = y, 
+      format = "html", 
+      color = if_else(is.na(y), "white", "black")
+    ),
+    `x - xbar` = cell_spec(
+      x = `x - xbar`, 
+      format = "html", 
+      color = if_else(is.na(`x - xbar`), "white", "black")
+    ),
+    `y - ybar` = cell_spec(
+      x = `y - ybar`, 
+      format = "html", 
+      color = if_else(is.na(`y - ybar`), "white", "black")
+    ),
+    `(x-xbar)(y-ybar)` = cell_spec(
+      x = `(x-xbar)(y-ybar)`, 
+      format = "html", 
+      color = if_else(
+        condition = is.na(`(x-xbar)(y-ybar)`), 
+        true = "white", 
+        false = "#cc0033"
+      )
+    ), 
+    `x - xbar^2` = cell_spec(
+      x = `x - xbar^2`, 
+      format = "html", 
+      color = if_else(
+        condition = is.na(`x - xbar^2`), 
+        true = "white", 
+        false = "blue"
+      )
+    )
+  ) |> 
+  kable(format = "html", escape = F, align = rep("r", 7))
+```
+:::
+
+. . .
+
+::: {.columns}
+::: {.column}
+[Slope]{.p-font style="font-size: 1.2em; color: #666"}
+
+$$b = \frac{\sum{\color{red}{(x_i - \bar{x})(y_i - \bar{y})}}}{\sum{\color{blue}{(x_i - \bar{x})^2}}}$$
+
+$$b = \frac{\color{red}{1}}{\color{blue}{2}}$$
+:::
+
+::: {.column .fragment}
+[Intercept]{.p-font style="font-size: 1.2em; color: #666"}
+
+$$a = \bar{y} - b\bar{x}$$
+
+$$a = 2 - (0.5 \times 2)$$
+
+$$a = 1$$
+:::
+:::
+
+. . .
+
+$$\hat{y} = 1 + 0.5x$$
+
+---
+
+## 
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+```{r}
+#| label: imperf_plot_bestfit
+#| fig-asp: 0.5
+imperf_plot_bestfit + 
+  annotate(
+    geom = "text", x = 1, y = 2.5, size = 7, parse = T, 
+    label = TeX("$\\hat{y} = 1 + 0.5x$", output = "character")
+  )
+```
+
+---
+
+## {data-menu-title="Shiny app: Bivariate regression" background-iframe="https://gallery.shinyapps.io/simple_regression/" background-interactive=TRUE}
+
+::: footer
+<https://gallery.shinyapps.io/simple_regression/>
+:::
+
+<!-- simple regression shiny app --> 
+
+
+
+# {.transition visibility="uncounted"}
+
+{{< tweet user=h_eecham id=1773928616633434510 >}}
+
+<!-- least squares estimation video --> 
+
+---
+
+## {.smaller data-menu-title="Terminology review"}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Technical stuff - Terminology review]{.p-font style="font-size: 1.2em; color: #666"}
+
+::: {.closelist .incremental}
+- The *best fit line* is determined using the [**ordinary least squares**]{.emph} method 
+- In other words, we try to find the best line that minimizes 
+the [distance]{color="green"} between the *predicted values* (the line, $\color{red}{\hat{y}}$) and the observed data, $\color{blue}{y_{i}}$
+- The [distances]{color="green"} representing deviations from the regression line are called [**residuals**]{.emph}
+- The best fit line is the one that reduces the *sum of squares* of the error term (this is a measure of the variability around the best fit line)
+- We never measure anything perfectly... there is <u>always</u> error
+:::
+
+. . .
+
+[Fitting a model]{.p-font style="font-size: 1.2em; color: #666"}
+
+$$y_i = \beta_0 + \beta_1 X_i + \epsilon_i$$
+
+::: {.closelist}
+- Coefficients (parameter estimates)
+  - $\beta_0$: intercept
+  - $\beta_1$: slope 
+- $\epsilon$: error
+:::
+
+
+
+# Ex. `mtcars` {.transition}
+
+---
+
+## Get to know the dataset {.smaller}
+
+- Using the `mtcars` dataset, we can fit a model with the 
+following variables:
+  - [**response variable**]{.emph}: `mpg`
+  - [predictor]{color="blue"}: `wt`
+
+```{webr-r}
+#| label: webr-mtcars-str
+str(mtcars)
+```
+
+---
+
+## Fitting the model {.smaller}
+
+::: {.columns}
+::: {.column .incremental}
+- We will fit the model using the linear equation...  
+$$mpg_i = \beta_0 + \beta_1 wt_i + \epsilon_i$$
+- To do this in R, we use the `lm()` function
+- `lm()` will use the *ordinary least squares* method to obtain 
+parameter estimates, i.e., β<sub>0</sub> (intercept) and 
+β<sub>1</sub> (slope)
+- In essence, it will estimate the parameters we need to predict 
+`mpg` for a given `weight`
+:::
+
+::: {.column .fragment}
+```{webr-r}
+#| label: mtcars_mod
+model <- lm(mpg ~ wt, data = mtcars)
+```
+:::
+:::
+
+---
+
+```{r}
+#| label: mtcars_p1
+#| fig-asp: 0.7
+#| fig-align: 'center'
+# Basic plot to demonstrate 'y ~ x'
+mtcars_p1 <- ggplot(mtcars) + 
+  aes(x = wt, y = mpg) + 
+  geom_point(
+    size = 5, fill = '#cc0033', 
+    color = "white", pch = 21, stroke = 1.1
+  ) + 
+  ds4ling_bw_theme(base_size = 24)
+mtcars_p1
+```
+
+---
+
+```{r}
+#| label: mtcars_p2
+#| fig-asp: 0.7
+#| fig-align: 'center'
+# Show that mean isnt useful
+mtcars_p2 <- mtcars_p1 + 
+  geom_hline(
+    yintercept = mean(mtcars$mpg), linewidth = 1, 
+    color = '#666666'
+  ) +
+  annotate(
+    geom = 'text', 
+    fontface = 3, 
+    x = (mean(mtcars$wt) + 1), 
+    y = (mean(mtcars$mpg) + 1), size = 5,
+    label = 'Mean mpg', color = '#666666'
+  )
+mtcars_p2
+```
+
+---
+
+```{r}
+#| label: mtcars_p3
+#| fig-asp: 0.7
+#| fig-align: 'center'
+mod <- lm(mpg ~ wt, data = mtcars)
+
+# show what ordinary least squares means
+mtcars_p2 + 
+  geom_abline(
+    intercept = mod$coef[[1]], 
+    slope = mod$coef[[2]], 
+    linewidth = 1
+  ) + 
+  annotate(
+    geom = 'text', 
+    fontface = 3, 
+    x = (mean(mtcars$wt) - 0.5), 
+    y = (mean(mtcars$mpg) + 3.5), 
+    size = 5, angle = -31, 
+    label = 'Best linear fit'
+  )
+```
+
+---
+
+```{r}
+#| label: mtcars_p4b
+#| fig-asp: 0.7
+#| fig-align: 'center'
+
+ggplot(mtcars) + 
+  aes(x = wt, y = mpg) + 
+  geom_hline(
+    yintercept = mean(mtcars$mpg), 
+    linewidth = 1, color = '#666666'
+  ) +
+  geom_segment(
+    aes(xend = wt, y = fitted(mod), yend = mpg), 
+    color = "#666666"
+  ) + 
+  geom_point(
+    size = 5, fill = '#cc0033', 
+    color = "white", pch = 21, stroke = 1.1
+  ) + 
+  stat_smooth(
+    method = 'lm', se = F, linewidth = 1, 
+    fullrange = TRUE, formula = 'y ~ x', color = "black"
+  ) + 
+  ds4ling_bw_theme(base_size = 24)
+```
+
+---
+
+```{r}
+#| label: mtcars_p4
+#| fig-asp: 0.7
+#| fig-align: 'center'
+
+ggplot(mod) + 
+  aes(x = fitted(mod), y = residuals(mod)) + 
+  geom_hline(yintercept = 0, linewidth = 1) + 
+  annotate(
+    geom = 'text', 
+    fontface = 3, 
+    x = 10, y = -1, 
+    size = 4.5, 
+    color = '#666666', 
+    label = 'Best linear fit\nLeast squares estimate\n(sideways)'
+  ) +
+  geom_segment(
+    aes(xend = fitted(mod), yend = 0), 
+    color = "#666666"
+  ) +
+  geom_point(
+    size = 5, fill = '#cc0033', 
+    color = "white", pch = 21, stroke = 1.1
+  ) + 
+  ds4ling_bw_theme(base_size = 24)
+```
+
+---
+
+## {.smaller data-menu-title="Interpreting model output"}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Interpreting model output]{.p-font style="font-size: 1.2em; color: #666666;"}
+
+::: {.columns}
+::: {.column width="25%" .closelist}
+- [Intercept]{color="#666666"}
+- [Slope]{color="#666666"}
+- [R<sup>2</sup>]{color="#666666"}
+:::
+
+::: {.column width="75%"}
+```{r}
+#| label: mtcars_table1
+mod <- lm(mpg ~ wt, data = mtcars)
+print(summary(mod), digits = 2)
+```
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Interpreting model output]{.p-font style="font-size: 1.2em; color: #666666;"}
+
+::: {.columns}
+::: {.column width="25%" .closelist}
+- [**Intercept**]{.emph}
+- [Slope]{color="#666666"}
+- [R<sup>2</sup>]{color="#666666"}
+:::
+
+::: {.column width="75%"}
+```{r}
+#| label: mtcars_p5
+#| fig-asp: 0.55
+#| fig-align: 'left'
+mtcars_p5 <- ggplot(mtcars) + 
+  aes(x = wt, y = mpg) + 
+  geom_vline(
+    xintercept = 0, lty = 2, 
+    lwd = 0.8, color = 'black'
+  ) + 
+  geom_hline(
+    yintercept = coef(mod)[1], lty = 2, 
+    linewidth = 0.8, color = 'black'
+  ) + 
+  geom_point(
+    size = 5, fill = '#cc0033', 
+    color = "white", pch = 21, stroke = 1.1
+  ) + 
+  stat_smooth(
+    method = 'lm', se = F, linewidth = 1, 
+    fullrange = TRUE, color = "black", formula = 'y ~ x'
+  ) + 
+  coord_cartesian(xlim = c(0, 6)) + 
+  ds4ling_bw_theme(base_size = 20)
+mtcars_p5
+```
+
+::: {style="font-size: 0.7em;"}
+<center>
+```{r}
+#| label: mtcars_table2
+mtcars_table2 <- mod |> 
+  tidy() |> 
+  mutate_if(is.numeric, give_n_digits, n = 2) |> 
+  kable(format = "html", align = c("l", rep("r", 4)))
+mtcars_table2
+```
+</center>
+:::
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Interpreting model output]{.p-font style="font-size: 1.2em; color: #666666;"}
+
+::: {.columns}
+::: {.column width="25%" .closelist}
+- [**Intercept**]{.emph}
+- [Slope]{color="#666666"}
+- [R<sup>2</sup>]{color="#666666"}
+:::
+
+::: {.column width="75%"}
+```{r}
+#| label: mtcars_p6
+#| fig-asp: 0.55
+#| fig-align: 'left'
+mtcars_p5 + 
+  geom_segment(
+    aes(x = 1, xend = 0, y = 16, yend = coef(mod)[[1]]), 
+    arrow = arrow(angle = 15, type = "closed"), 
+    color = 'darkred'
+  ) +
+  annotate(
+    geom = 'text', 
+    x = 1.2, y = 15, 
+    label = glue("y-intercept = {round(coef(mod)[[1]], 2)}"), 
+    size = 5, color = 'darkred'
+  )
+```
+
+::: {style="font-size: 0.7em;"}
+<center>
+```{r}
+#| label: mtcars_table3
+mtcars_table2
+```
+</center>
+:::
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Interpreting model output]{.p-font style="font-size: 1.2em; color: #666666;"}
+
+::: {.columns}
+::: {.column width="25%" .closelist}
+- [Intercept]{color="#666666"}
+- [**Slope**]{.emph}
+- [R<sup>2</sup>]{color="#666666"}
+:::
+
+::: {.column width="75%"}
+```{r}
+#| label: mtcars_p7
+#| fig-asp: 0.55
+#| fig-align: 'left'
+mtcars_p5 + 
+  geom_segment(
+    aes(x = 0, xend = 1, y = coef(mod)[1], yend = coef(mod)[1]), 
+    lty = 2, linewidth = 0.8, color = 'black'
+  ) + 
+  geom_segment(
+    mapping = aes(
+      x = 1, xend = 1, 
+      y = coef(mod)[1], yend = coef(mod)[1] + coef(mod)[2]
+    ), 
+    lty = 2, linewidth = 0.8, color = 'black', 
+  ) + 
+  geom_segment(
+    mapping = aes(x = 2, xend = 1.1, y = (coef(mod)[1]) - 1), 
+    yend = coef(mod)[1], 
+    arrow = arrow(angle = 15, type = "closed"), 
+    color = 'darkred'
+  ) +
+  annotate(
+    geom = 'text', 
+    x = 2.5, y = (coef(mod)[1] - 1), 
+    label = glue("Slope = {round(coef(mod)[[2]], 2)}"), 
+    size = 5, color = 'darkred'
+  )
+```
+
+::: {style="font-size: 0.7em;"}
+<center>
+```{r}
+#| label: mtcars_table4
+mtcars_table2
+```
+</center>
+:::
+:::
+:::
+
+---
+
+## {data-menu-title="Understanding slopes and intercepts"}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Understanding slopes and intercepts]{.p-font style="font-size: 1.2em; color: #666666;"}
+
+```{r}
+#| label: lm_ex1
+#| fig-asp: 0.5
+#| fig-align: 'center'
+lm_ex()
+```
+
+---
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Same intercept, but different slopes]{.p-font style="font-size: 1.2em; color: #666666;"}
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: lm_ex2
+#| fig-asp: 0.9
+lm_ex(
+  n = 100, slope = 10, intercept = 0, 
+  sigma = 0.5, base_size = 24, text_size = 8
+)
+```
+:::
+
+::: {.column}
+```{r}
+#| label: lm_ex3
+#| fig-asp: 0.9
+lm_ex(
+  n = 100, slope = 1, intercept = 0, sigma = 0.5, 
+  custAxis = TRUE, xlim = c(-3, 3), ylim = c(-30, 23), 
+  base_size = 24, text_size = 8
+)
+```
+:::
+:::
+
+---
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Positive and negative slope]{.p-font style="font-size: 1.2em; color: #666666;"}
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: lm_ex4
+#| fig-asp: 0.9
+lm_ex(
+  n = 300, slope = 10, intercept = 0, 
+  sigma = 2.5, base_size = 24, text_size = 8
+)
+```
+:::
+
+::: {.column}
+```{r}
+#| label: lm_ex5
+#| fig-asp: 0.9
+lm_ex(
+  n = 300, slope = -10, intercept = 0, 
+  sigma = 2.5, base_size = 24, text_size = 8
+)
+```
+:::
+:::
+
+---
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Different intercepts, but same slopes]{.p-font style="font-size: 1.2em; color: #666666;"}
+
+::: {.columns}
+::: {.column}
+```{r}
+#| label: lm_ex6
+#| fig-asp: 0.9
+lm_ex(
+  n = 300, slope = 1, intercept = 0, sigma = 2.5, 
+  custAxis = TRUE, xlim = c(-4, 4), ylim = c(-10, 30), 
+  base_size = 24, text_size = 8
+)
+```
+:::
+
+::: {.column}
+```{r}
+#| label: lm_ex7
+#| fig-asp: 0.9
+lm_ex(
+  n = 300, slope = 1, intercept = 20, sigma = 2.5, 
+  custAxis = TRUE, xlim = c(-4, 4), ylim = c(-10, 30), 
+  base_size = 24, text_size = 8
+)
+```
+:::
+:::
+
+---
+
+## {.smaller data-menu-title="R<sup>2</sup>"}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.75em;"}
+
+[Interpreting model output]{.p-font style="font-size: 1.2em; color: #666666;"}
+
+::: {.columns}
+::: {.column width="25%" .closelist}
+- [Intercept]{color="#666666"}
+- [Slope]{color="#666666"}
+- [**R**]{.emph}<sup>2</sup>
+:::
+
+::: {.column width="75%"}
+[The coefficient of determination]{.p-font style="font-size: 1.2em; color: #666666;"}
+
+- An overall assessment of model fit
+- R<sup>2</sup> is the variance explained by your model
+- Ranges from 0 to 1 (1 = 100% variance explained)
+- Literally calculated as [**r**]{.emph} $\times$ [**r**]{.emph} = R<sup>2</sup> (note the uppercase)
+- But what does it mean to explain variance?
+:::
+:::
+
+
+
+
+# More about error {.transition}
+
+---
+
+## {.smaller data-menu-title="Variance and error deviation"}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.95em;"}
+
+[Variance and error deviation]{.p-font style="font-size: 1.4em; color: #666666"}
+
+::: {.columns}
+::: {.column width="45%"}
+```{r}
+#| label: variance_explained1
+#| fig-asp: 0.9
+ggplot(imperf_points1) + 
+  aes(x = x, y = y) + 
+  coord_cartesian(xlim = c(0, 4), ylim = c(0, 4)) + 
+  geom_vline(xintercept = 0) + 
+  geom_hline(yintercept = 0) + 
+  geom_point(color = 'blue', fill = 'grey70', pch = 21, size = 6) + 
+  ds4ling_bw_theme(base_size = 24)
+```
+:::
+
+::: {.column width="55%"}
+- To understand variance we have to think about deviance
+- In other words we have to think about the relationship between 
+$\color{red}{y_i}$, $\color{blue}{\bar{y}}$, and $\color{green}{\hat{y}}$
+  - $\color{red}{y_i}$ = An observed, measured value of y
+  - $\color{blue}{\bar{y}}$ = The mean value of y
+  - $\color{green}{\hat{y}}$ = A value of y predicted by our model (along the regression line)
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.95em;"}
+
+[Variance and error deviation]{.p-font style="font-size: 1.4em; color: #666666"}
+
+::: {.columns}
+::: {.column width="45%"}
+```{r}
+#| label: variance_explained2
+#| fig-asp: 0.9
+var_exp_p1 <- imperf_points1 |> 
+  mutate(varexp = if_else(y == 3, 1, 0)) |> 
+  ggplot() +
+  aes(x = x, y = y, fill = as.factor(varexp)) + 
+  coord_cartesian(xlim = c(0, 4), ylim = c(0, 4)) + 
+  geom_vline(xintercept = 0) + 
+  geom_hline(yintercept = 0) + 
+  geom_hline(
+    yintercept = mean(imperf_points1$y), lty = 2, 
+    color = 'blue', lwd = 1.25
+  ) +
+  geom_abline(
+    intercept = coef(imperf_mod)[1], 
+    slope = coef(imperf_mod)[2], 
+    lty = 1, color = "darkolivegreen4", lwd = 1.5
+  ) + 
+  geom_segment(
+    aes(xend = imperf_points1$x, yend = fitted(imperf_mod)), 
+    lty = 3, lwd = 1
+  ) + 
+  geom_point(
+    color = 'black', pch = 21, size = 6, 
+    show.legend = F, stroke = 1.5
+  ) + 
+  scale_fill_brewer(palette = "Set1", direction = -1) + 
+  ds4ling_bw_theme(base_size = 24) + 
+  annotate(
+    geom = "text", x = 1, y = 2.2, 
+    label = TeX("$y_1$", output = "character"), 
+    fontface = 5, size = 10, parse = T
+  ) + 
+  annotate(
+    geom = "text", x = 2, y = 0.8, 
+    label = TeX("$y_2$", output = "character"), 
+    fontface = 5, size = 10, parse = T) +
+  annotate(
+    geom = "text", x = 3, y = 3.2, 
+    label = TeX("$y_3$", output = "character"), 
+    fontface = 5, size = 10, parse = T
+  )
+var_exp_p1
+```
+:::
+
+::: {.column width="55%"}
+<br>
+
+$\color{red}{y_i}$ = An observed, measured value of y  
+$\color{blue}{\bar{y}}$ = The mean value of y  
+$\color{green}{\hat{y}}$ = A value of y predicted by our model
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.95em;"}
+
+[Variance and error deviation]{.p-font style="font-size: 1.4em; color: #666666"}
+
+::: {.columns}
+::: {.column width="45%"}
+```{r}
+#| label: variance_explained3
+#| fig-asp: 0.9
+var_exp_p1 + 
+  annotate(
+    geom = "text", x = 2.7, y = 2.58, 
+    label = "{", fontface = 5, size = 45
+  ) +
+  annotate(
+    geom = "text", x = 2.1, y = 2.6, 
+    label = "Total\ndeviation", 
+    color = "red", fontface = 3, size = 9, hjust = 0.5
+  )
+```
+:::
+
+::: {.column width="55%"}
+<br>
+
+$\color{red}{y_i}$ = An observed, measured value of y  
+$\color{blue}{\bar{y}}$ = The mean value of y  
+$\color{green}{\hat{y}}$ = A value of y predicted by our model 
+
+Total deviation: $\color{red}{y_i} - \color{blue}{\bar{y}}$
+
+Ex. $y_3$ = 3 - 2
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.95em;"}
+
+[Variance and error deviation]{.p-font style="font-size: 1.4em; color: #666666"}
+
+::: {.columns}
+::: {.column width="45%"}
+```{r}
+#| label: variance_explained4
+#| fig-asp: 0.9
+var_exp_p1 + 
+  annotate(
+    geom = "text", x = 3.1, y = 2.3, 
+    label = "}", fontface = 5, size = 23
+  ) +
+  annotate(
+    geom = "text", x = 3.7, y = 2.25, color = "red", 
+    label = "Predicted\ndeviation", fontface = 3, size = 8
+  )
+```
+:::
+
+::: {.column width="55%"}
+<br>
+
+$\color{red}{y_i}$ = An observed, measured value of y  
+$\color{blue}{\bar{y}}$ = The mean value of y  
+$\color{green}{\hat{y}}$ = A value of y predicted by our model
+
+Total deviation: $\color{red}{y_i} - \color{blue}{\bar{y}}$  
+Predicted deviation: $\color{green}{\hat{y}} - \color{blue}{\bar{y}}$ 
+
+Ex. $y_3$ = 2.5 - 2
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.95em;"}
+
+[Variance and error deviation]{.p-font style="font-size: 1.4em; color: #666666"}
+
+::: {.columns}
+::: {.column width="45%"}
+```{r}
+#| label: variance_explained5
+#| fig-asp: 0.9
+var_exp_p1 + 
+  annotate(
+    geom = "text", x = 2.8, y = 2.75, 
+    label = "{", fontface = 5, size = 25
+  ) +
+  annotate(
+    geom = "text", x = 2.2, y = 2.8, color = "red", 
+    label = "Error\ndeviation", fontface = 3, lwd = 8
+  )
+```
+:::
+
+::: {.column width="55%"}
+<br>
+
+$\color{red}{y_i}$ = An observed, measured value of y  
+$\color{blue}{\bar{y}}$ = The mean value of y  
+$\color{green}{\hat{y}}$ = A value of y predicted by our model
+
+Total deviation: $\color{red}{y_i} - \color{blue}{\bar{y}}$  
+Predicted deviation: $\color{green}{\hat{y}} - \color{blue}{\bar{y}}$  
+Error deviation: $\color{red}{y_i} - \color{blue}{\hat{y}}$ 
+
+Ex. $y_3$ = 3 - 2.5
+:::
+:::
+
+---
+
+## {.smaller}
+
+[Bivariate regression]{.emph .p-font style="font-size: 1.95em;"}
+
+[Variance and error deviation]{.p-font style="font-size: 1.4em; color: #666666"}
+
+::: {.columns}
+::: {.column width="45%"}
+```{r}
+#| label: variance_explained6
+#| fig-asp: 0.9
+var_exp_p1 + 
+  annotate(
+    geom = "text", x = 2.7, y = 2.58, 
+    label = "{", fontface = 5, size = 90
+  ) + 
+  annotate(
+    geom = "text", x = 2.1, y = 2.58, 
+    label = "Total\ndeviation", 
+    color = "red", fontface = 3, size = 8, hjust = 0
+  ) + 
+  annotate(
+    geom = "text", x = 3.15, y = 2.3, 
+    label = "}", fontface = 5, size = 45
+  ) + 
+  annotate(
+    geom = "text", x = 3.25, y = 2.27, color = "red", 
+    label = "Predicted\ndeviation", fontface = 2, 
+    size = 8, hjust = 0
+  ) + 
+  annotate(
+    geom = "text", x = 3.15, y = 2.8, 
+    label = "}", fontface = 5, size = 40
+  ) + 
+  annotate(
+    geom = "text", x = 3.25, y = 2.8, color = "red", 
+    label = "Error\ndeviation", fontface = 2, 
+    size = 8, hjust = 0
+  ) + 
+  coord_cartesian(xlim = c(2, 4), ylim = c(1.5, 3.5))
+```
+:::
+
+::: {.column width="55%"}
+- Again we square these values so that positive values are not canceled out by the negative values
+- We calculate these deviations for all observations
+
+$$SS_{total} = \sum (y_i - \bar{y})^2$$
+$$SS_{predicted} = \sum (\hat{y}_i - \bar{y})^2$$
+$$SS_{error} = \sum (y_i - \hat{y}_i)^2$$
+
+$$SS_{total} = SS_{predicted} + SS_{error}$$
+:::
+:::
+
+---
+
+## Error and R<sup>2</sup> {background-image="https://www.jvcasillas.com/media/rstats/memes/lm_office.png" background-position="95% 50%" background-size="500px"}
+
+::: {.columns}
+::: {.column}
+::: {.r-fit-text}
+$$R^2 = \frac{SS_{predicted}}{SS_{total}}$$
+:::
+:::
+:::
+
+. . .
+
+### ...or r * r
+
+---
+
+## {data-menu-title="React app: R2" background-iframe="https://www.react-graph-gallery.com/example/scatterplot-r2-playground" background-interactive=TRUE}
+
+::: footer
+https://www.react-graph-gallery.com/example/scatterplot-r2-playground
+:::
+
+<!-- bivariate regression shiny app --> 
+
+
+
+# Summing up {.transition}
+
+---
+
+## {data-menu-title="Shiny app: Bivariate regression II" background-iframe="https://jvcasillas.com/shiny_bivariate_regression/" background-interactive=TRUE}
+
+::: footer
+<https://jvcasillas.com/shiny_bivariate_regression/>
+:::
+
+<!-- bivariate regression shiny app --> 
+
+---
+
+
+
+
+# [References]{.emph} {.final}
+
+::: {#refs}
+:::
+
+::: notes
+@wickham2016r
+@qml_ch2
+@qass22_ch1
+:::
+
+
+
+# Bonus<br>Riverside income and education (qass 22)
+
+---
+
+## Explore riverside data {.smaller}
+
+Taken from QASS 22 (Ch. 1, Table 2)
+
+```{r}
+#| label: explore-riverside
+#| echo: true
+glimpse(riverside)
+head(riverside)
+```
+
+---
+
+```{r}
+#| label: fg-riverside
+#| fig-asp: 0.6
+riverside |> 
+  ggplot() + 
+  aes(x = education, y = income) + 
+  geom_point() + 
+  scale_x_continuous(breaks = seq(0, 20, 2)) + 
+  scale_y_continuous(breaks = seq(2500, 22500, 2500)) + 
+  coord_cartesian(xlim = c(0, 20), ylim = c(2500, 22500)) + 
+  labs(
+    x = "Education (in years)", 
+    y = "Income (in dollars)", 
+    title = "Riverside income/education data (QASS 22, Ch. 2, Tbl. 2)"
+  ) + 
+  ds4ling_bw_theme(base_size = 16)
+```
+
+---
+
+## Fit model
+
+First we'll fit the model using `lm()`.
+
+```{r}
+#| label: fit-riverside-model
+#| echo: true
+mod <- lm(income ~ education, data = riverside)
+```
+
+<br>
+
+Here is a table of the model summary: 
+
+```{r}
+#| label: table-riverside
+tidy(mod) |>
+  kable(format = "pandoc")
+```
+
+---
+
+```{r}
+#| label: fg-riverside2
+#| fig-asp: 0.6
+
+# extract equation with `ital_vars = TRUE` to avoid the use of `\operatorname`
+m_eq <- extract_eq(mod, use_coef = TRUE, ital_vars = TRUE)
+prep_eq <- gsub("\\\\_", "-", m_eq)
+prep_eq <- paste("$", as.character(prep_eq), "$", sep = "")
+
+mod_sum_df <- tibble(
+  income = c(10500, 3050), 
+  education = c(1.5, 3.6), 
+  lab = c("Intercept", "Slope")
+)
+
+riverside |> 
+  ggplot() + 
+  aes(x = education, y = income) + 
+  geom_point() + 
+  geom_vline(xintercept = 0, lty = 3, color = "grey60") + 
+  geom_abline(intercept = mod$coef[[1]], slope = mod$coef[[2]]) + 
+  geom_curve(
+    data = tibble(
+      x1 = c(1.5, 3),
+      x2 = c(0.05, 1.05),
+      y1 = c(10000, 3000),
+      y2 = c(mod$coef[[1]] + 300, mod$coef[[1]] - 300)
+    ),
+    aes(x = x1, y = y1, xend = x2, yend = y2),
+    arrow = arrow(length = unit(0.02, "npc")), curvature = -0.2
+  ) + 
+  geom_text(
+    data = mod_sum_df, 
+    aes(label = lab), 
+  ) + 
+  geom_segment(
+    data = tibble(
+      x1 = c(0, 1), 
+      x2 = c(1, 1), 
+      y1 = c(mod$coef[[1]], mod$coef[[1]]),
+      y2 = c(mod$coef[[1]], mod$coef[[1]] + mod$coef[[2]]), 
+    ), 
+    aes(x = x1, xend = x2, y = y1, yend = y2), 
+    color = "black", lty = 3
+  ) + 
+  scale_x_continuous(breaks = seq(0, 20, 2)) + 
+  scale_y_continuous(breaks = seq(2500, 22500, 2500)) + 
+  coord_cartesian(xlim = c(0, 20), ylim = c(2500, 22500)) + 
+  labs(
+    x = "Education (in years)", 
+    y = "Income (in dollars)", 
+    title = "Riverside income/education data (QASS 22, Ch. 2, Tbl. 2)", 
+    subtitle = TeX(prep_eq)
+  ) + 
+  ds4ling_bw_theme(base_size = 16)
+```
+
+---
+
+## Making predictions
+
+What is the predicted income of somebody with 6/10/16 years of education in Riverside?
+
+```{r}
+#| label: example-predict
+#| echo: true
+#| comment: "##"
+5077 + (732 * 6)
+```
+
+<br>
+
+Do it in R: 
+
+```{webr-r}
+
+```
+

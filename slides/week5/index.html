@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Week 5: The Linear Model</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kyle Parrish" />
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rutgers-fonts.css" rel="stylesheet" />
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="my-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Week 5: The Linear Model
+]
+.subtitle[
+## Statistics for Linguists
+]
+.author[
+### Kyle Parrish
+]
+.date[
+### Goethe Uni Frankurt</br>Summer 2025</br>Last update: 2025-06-17
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.center[
+## Slides are created from open course notes by Joseph Casillas [here](https://www.ds4ling.jvcasillas.com/slides/05_lm/01_bivariate_regression/#/title-slide/=)]
+
+---
+
+# Linear Regression
+
+
+
+.pull-left[
+.large[
+So far, we have been focusing on **comparing two means** (e.g. is class A better than class B at math).
+]
+]
+
+--
+
+.pull-right[
+.large[
+But what about .red[confounding variables?]
+
+What if the differences in math scores between two schools are not simply because one school is better, but because of another variable (socio-economic status)?
+
+For this we can use a linear model - specifically a multivariate linear regression. 
+
+It can consider several variables at once! 
+]]
+
+---
+
+# What are models?  
+
+.large[
+&gt; "All models are wrong, but some are useful." &lt;br&gt;&lt;br&gt;
+George Box
+
+]
+
+.large[
+**Models** simplify reality for purposes of understanding or prediction.  
+]
+
+--
+
+.large[
+
+Statistical modeling has these two sometimes divergent goals:
+
+- .green[*Description*]: using a model to describe the relationship between an outcome variable of interest and one or more predictor variables.
+
+
+- .red[*Prediction*]: using a model to predict unknown instances of the outcome variable such that out-of-sample predictive error is minimized.
+]
+
+---
+
+# The basics
+
+.pull-left[
+.large[
+A linear model is *parametric* because we assume that the relationship between two variables is linear and can be defined by the *parameters* of a line---an .green[intercept] and .red[slope].  We'll start by considering a simple linear model.
+]]
+
+--
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-4-1.png" width="432" /&gt;
+]
+
+---
+
+# Simple linear model
+
+.large[
+A simple linear model has an outcome, `\(y\)`, and one predictor, `\(x\)`. 
+
+`$$y = mx + b$$`
+]
+
+
+--
+
+We often want to *predict* or *describe* the outcome .blue[y] as a function of the predictor .red[x].
+
+--
+
+.large[
+**Examples**
+
+.blue[weight] ~ .red[height]
+
+.blue[IQ] ~ .red[age]
+
+.blue[ice cream sold] ~ .red[temperature]
+
+.blue[RT] ~ .red[group]
+]
+
+---
+
+# Linear algebra 
+
+*mx* is the *slope* and .blue[b] is the point where the line crosses the y-axis when x = 0, i.e. the *y-intercept*.
+
+If you know two of the variables, you can solve for the third... 
+assume x = 2. Solve for y.
+
+--
+
+`$$y = 50 + 10x$$`
+
+--
+
+`$$y = 50 + 10 \times 2$$`
+
+--
+
+`$$y = 50 + 20$$`
+
+--
+
+`$$y = 70$$`
+
+---
+
+# Cartesian coordinates
+
+.pull-left[
+&lt;img src="index_files/figure-html/cartesian_coord_plot1-1.png" width="432" /&gt;
+]
+
+
+.pull-right[
+&lt;img src="index_files/figure-html/cartesian_coord_plot2-1.png" width="432" /&gt;
+]
+---
+
+# Cartesian coordinates
+
+.pull-left[
+&lt;img src="index_files/figure-html/cartesian_coord_plot3-1.png" width="432" /&gt;
+]
+
+--
+
+.pull-right[
+&lt;img src="index_files/figure-html/cartesian_coord_plot4-1.png" width="432" /&gt;
+]
+
+---
+
+# Bivariate regression
+
+The linear model is basically the same as linear algebra, with two subtle differences
+  1. We fit the line through data points (measurements, observations)
+  2. We use slightly different terminology
+
+
+`$$\color{blue}{response} \sim intercept + (slope * \color{red}{predictor})$$`
+
+`$$\color{blue}{\hat{y}} = a + b\color{red}{x}$$`
+
+--
+
+- We call our dependent variable the .blue[outcome variable] (or criterion)
+- Our independent variables are called .red[predictors]
+- The intercept and the slope are *coefficients*
+  - These are the meat and potatoes of the linear model
+  - They are also called *parameter estimates*
+
+---
+
+# How do we know the line of best fit?
+
+.pull-left[
+&lt;img src="index_files/figure-html/best_fit1-1.png" width="432" /&gt;
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/best_fit2-1.png" width="432" /&gt;
+]
+
+---
+
+# Bivariate Regression
+
+.pull-left[
+&lt;img src="index_files/figure-html/best_fit3-1.png" width="432" /&gt;
+]
+
+.pull-right[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; x &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; y &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+- If we tried to predict using just the .blue[mean of y] we would be right once
+- We'd miss badly for .red[(1, 1)] and .red[(3, 3)].
+- The **line of best fit** is that which reduces the distance between the *predicted values* of `y` and the *observed values* of `y`. 
+]
+
+
+---
+
+# Bivariate regression
+
+### Measurement error
+
+.pull-left[
+- We rarely (never) find a perfectly linear relationship in our data
+  - Most relationships are not perfectly linear
+  - Our measurements are not perfect (VOT, formants, durations, RT)
+  - There is error in everything (normal distribution)
+- We account for *error* in our models]
+
+
+### `$$\hat{y} = a + bx + \color{red}{\epsilon}$$`
+
+---
+
+# Bivariate regression
+
+### Measurement error
+
+.pull-left[
+&lt;img src="index_files/figure-html/best_fit4-1.png" width="432" /&gt;
+]
+
+.pull-right[
+- Again, we can see that the .blue[mean of `y`] isn't the best solution. 
+  - It can summarize the `y` data
+  - It cannot explain the relationship between `x` and `y`.
+- We need a method to assess how well a given line fits the data
+- We need a method to determine the optimal intercept and slope (the line of best fit)
+]
+
+---
+
+# Bivariate regression
+
+### More on error
+
+&lt;img src="index_files/figure-html/unnamed-chunk-14-1.png" width="33%" /&gt;&lt;img src="index_files/figure-html/unnamed-chunk-14-2.png" width="33%" /&gt;&lt;img src="index_files/figure-html/unnamed-chunk-14-3.png" width="33%" /&gt;
+
+- One way to do this is to calculate the 'distance' between predicted y (ŷ, y-hat) and observed y ($y_i$). 
+- If we add up this distance for each observation we can compare it to other lines (i.e., other distances). 
+- The line that produces the shortest distance is the best. 
+
+
+---
+
+# Bivariate regression
+
+### More on error
+
+.pull-left[
+&lt;img src="index_files/figure-html/best_fit6-1.png" width="432" /&gt;
+]
+
+.pull-right[
+- The difference between `\(\hat{y}\)` and `\(y_i\)` is called *prediction error*
+- The *total prediction error* (TPE) is the sum of the prediction error of all observations
+- This measurement is not ideal because negative values cancel out the positive ones, thus we square them. 
+- We call this the sum of square of the errors (SSE)
+]
+
+---
+
+# Bivariate regression
+
+### More on error
+
+.pull-left[
+&lt;img src="index_files/figure-html/best_fit7-1.png" width="432" /&gt;
+]
+
+.pull-right[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; x_i &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; y_i &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; y_hat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pred.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; sqrd.error &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1.6&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.16 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;2.7&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.89 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;3&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;3&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;3.8&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.64 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: #cc0033 !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: #cc0033 !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: #cc0033 !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;color: #cc0033 !important;"&gt; -2.1 &lt;/td&gt;
+   &lt;td style="text-align:right;color: #cc0033 !important;"&gt; 3.69 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+This line is not the best fit for these data because it does not *minimize the sum of the squares of the errors*.
+]
+
+---
+
+# Bivariate regression
+
+### More on error
+
+.pull-left[
+&lt;img src="index_files/figure-html/best_fit8-1.png" width="432" /&gt;
+]
+
+
+.pull-right[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; x_i &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; y_i &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; y_hat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pred.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; sqrd.error &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;0.75&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5625 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1.25&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0625 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;3&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;3&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1.75&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5625 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: #cc0033 !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: #cc0033 !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: #cc0033 !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;color: #cc0033 !important;"&gt; 2.25 &lt;/td&gt;
+   &lt;td style="text-align:right;color: #cc0033 !important;"&gt; 3.1875 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+- This line is not the best fit for these data because it does not *minimize the 
+sum of the squares of the errors*. 
+]
+
+---
+
+# Bivariate regression
+
+### More on error
+
+
+.pull-left[
+&lt;img src="index_files/figure-html/best_fit9-1.png" width="432" /&gt;
+]
+
+.pull-right[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; x_i &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; y_i &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; y_hat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pred.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; sqrd.error &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1.5&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.25 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;3&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;3&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;2.5&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.25 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: white !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: white !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: #cc0033 !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: #cc0033 !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;color: #cc0033 !important;"&gt; &lt;span style="     color: white !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;color: #cc0033 !important;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;color: #cc0033 !important;"&gt; 1.50 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+- This line represents a much better fit (1.50 is lower than the SSE of the other lines)
+- So how do we calculate the line the minimizes the sum of squares of the errors?
+]
+
+---
+
+# Bivariate Regression
+
+### Least squares estimation
+
+&lt;br&gt;
+
+`$$b = \frac{\sum{(x_i - \bar{x})(y_i - \bar{y})}}{\sum{(x_i - \bar{x})^2}}$$`
+--
+
+`$$a = \bar{y} - b\bar{x}$$`
+---
+
+# Bivariate Regression
+
+### Least squares estimation
+
+
+.pull-left[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; obs &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; x &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; y &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; x - xbar &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; y - ybar &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; (x-xbar)(y-ybar) &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; x - xbar^2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;-1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;0&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: #cc0033 !important;" &gt;0&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: blue !important;" &gt;1&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;0&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;-1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: #cc0033 !important;" &gt;0&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: blue !important;" &gt;0&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;3&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;3&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;3&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: #cc0033 !important;" &gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: blue !important;" &gt;1&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;Sum&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;6&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;6&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: #cc0033 !important;" &gt;1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: blue !important;" &gt;2&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;Mean&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: black !important;" &gt;2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; &lt;span style="     color: white !important;" &gt;NA&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+]
+
+
+.pull-right[
+
+`$$b = \frac{\sum{\color{red}{(x_i - \bar{x})(y_i - \bar{y})}}}{\sum{\color{blue}{(x_i - \bar{x})^2}}}$$`
+
+`$$b = \frac{\color{red}{1}}{\color{blue}{2}}$$`
+
+`$$a = \bar{y} - b\bar{x}$$`
+
+`$$a = 2 - (0.5 \times 2)$$`
+
+`$$a = 1$$`
+
+`$$\hat{y} = 1 + 0.5x$$`
+]
+
+---
+
+# Bivariate regression
+
+&lt;img src="index_files/figure-html/imperf_plot_bestfit-1.png" width="432" /&gt;
+
+---
+
+# Bivariate Regression 
+
+
+- The *best fit line* is determined using the **ordinary least squares** method 
+
+- In other words, we try to find the best line that minimizes 
+the .green[distance] between the *predicted values* (the line, `\(\color{red}{\hat{y}}\)`) and the observed data, `\(\color{blue}{y_{i}}\)`
+- The .green[distances] representing deviations from the regression line are called **residuals**.
+
+- The best fit line is the one that reduces the *sum of squares* of the error term (this is a measure of the variability around the best fit line)
+
+- We never measure anything perfectly... there is &lt;u&gt;always&lt;/u&gt; error
+
+
+---
+
+# Fitting a model
+
+`$$y_i = \beta_0 + \beta_1 X_i + \epsilon_i$$`
+
+- Coefficients (parameter estimates)
+  - `\(\beta_0\)`: intercept
+  - `\(\beta_1\)`: slope 
+- `\(\epsilon\)`: error
+
+We will again use the `mtcars` dataset.
+
+---
+
+# Get to know the dataset
+
+- Using the `mtcars` dataset, we can fit a model with the 
+following variables:
+  - **response variable**: `mpg`
+  - .blue[predictor]: `wt`
+
+```{webr-r}
+#| label: webr-mtcars-str
+str(mtcars)
+```
+
+---
+
+# Fitting the model 
+
+.pull-left[
+- We will fit the model using the linear equation...  
+`$$mpg_i = \beta_0 + \beta_1 wt_i + \epsilon_i$$`
+- To do this in R, we use the `lm()` function
+- `lm()` will use the *ordinary least squares* method to obtain 
+parameter estimates, i.e., β&lt;sub&gt;0&lt;/sub&gt; (intercept) and 
+β&lt;sub&gt;1&lt;/sub&gt; (slope)
+- In essence, it will estimate the parameters we need to predict 
+`mpg` for a given `weight`
+]
+
+.pull-right[
+
+```
+#&gt; 
+#&gt; Call:
+#&gt; lm(formula = mpg ~ wt, data = mtcars)
+#&gt; 
+#&gt; Coefficients:
+#&gt; (Intercept)           wt  
+#&gt;      37.285       -5.344
+```
+]
+
+---
+
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+&lt;img src="index_files/figure-html/mtcars_p1-1.png" width="432" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+&lt;img src="index_files/figure-html/mtcars_p2-1.png" width="432" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+&lt;img src="index_files/figure-html/mtcars_p3-1.png" width="432" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+&lt;img src="index_files/figure-html/mtcars_p4b-1.png" width="432" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+&lt;img src="index_files/figure-html/mtcars_p4-1.png" width="432" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Interpreting model output
+
+
+- Intercept
+- Slope
+- R&lt;sup&gt;2&lt;/sup&gt;
+
+
+```
+#&gt; 
+#&gt; Call:
+#&gt; lm(formula = mpg ~ wt, data = mtcars)
+#&gt; 
+#&gt; Residuals:
+#&gt;    Min     1Q Median     3Q    Max 
+#&gt;  -4.54  -2.36  -0.13   1.41   6.87 
+#&gt; 
+#&gt; Coefficients:
+#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept)    37.29       1.88    19.9   &lt;2e-16 ***
+#&gt; wt             -5.34       0.56    -9.6    1e-10 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; Residual standard error: 3 on 30 degrees of freedom
+#&gt; Multiple R-squared:  0.75,	Adjusted R-squared:  0.74 
+#&gt; F-statistic:  91 on 1 and 30 DF,  p-value: 1.3e-10
+```
+
+
+---
+
+## Interpreting model output
+
+- **Intercept**
+- Slope
+- R&lt;sup&gt;2&lt;/sup&gt;
+
+--
+
+&lt;img src="index_files/figure-html/mtcars_p5-1.png" width="432" style="display: block; margin: auto auto auto 0;" /&gt;
+ 
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; wt &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5.34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+---
+
+## Interpreting model output
+
+- **Intercept**
+- Slope
+- R&lt;sup&gt;2&lt;/sup&gt;
+
+--
+
+&lt;img src="index_files/figure-html/mtcars_p6-1.png" width="432" style="display: block; margin: auto auto auto 0;" /&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; wt &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5.34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+---
+
+## Interpreting model output
+
+- Intercept
+- **Slope**
+- R&lt;sup&gt;2&lt;/sup&gt;
+
+--
+
+&lt;img src="index_files/figure-html/mtcars_p7-1.png" width="432" style="display: block; margin: auto auto auto 0;" /&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; wt &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5.34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+---
+
+## Interpreting model output
+
+- Intercept
+- Slope
+- **R&lt;sup&gt;2&lt;/sup&gt;**
+
+--
+
+The coefficient of determination
+
+- An overall assessment of model fit
+- R&lt;sup&gt;2&lt;/sup&gt; is the variance explained by your model
+- Ranges from 0 to 1 (1 = 100% variance explained)
+
+---
+
+## Making predictions
+
+Recall the linear model equation...
+
+`$$\hat{y} = \beta_0 + \beta_1 wt_i + \epsilon_i$$`
+
+- Our `mtcars` model can be summarized as...
+
+`$$mpg = 37.29 + -5.34 wt$$`
+
+
+- What is the predicted `mpg` for a car that weighs 1 unit? And one that weighs 3? And 6?
+
+--
+
+31.94 `\(mpg = 37.29 + -5.34 \times 1\)`
+
+21.25 `\(mpg = 37.29 + -5.34 \times 3\)` 
+
+5.22 `\(mpg = 37.29 + -5.34 \times 6\)`
+
+
+---
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="index_files/figure-html/mtcars_p8-1.png" width="432" /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
