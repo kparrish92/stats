@@ -1,0 +1,227 @@
+participant,group,eng_variety,spn_variety,have_ln,check_pass,check_fails,totals,real_correct,real_incorrect,nonse_correct,nonse_incorrect,n_real,n_nonse,n,lextale_avg,lextale_tra
+558aab19fdf99b65685f0142,learner,Midwest,I am not familiar with Spanish,no,1,0,90,28,32,16,14,60,30,90,50,0
+55ce148b34e9060012e56279,learner,Northeast,I am not familiar with Spanish,no,1,0,90,22,38,16,14,60,30,90,45,-6
+5630246f733ea0000f1633dd,learner,Midwest,United States,no,1,0,90,4,56,28,2,60,30,90,50,0
+5658000ca9872d0011e1ba26,learner,Midwest,I am not familiar with Spanish,no,1,0,90,11,49,24,6,60,30,90,49.166666666666664,-1
+565a4547c51d43000587507d,learner,Midwest,United States,no,1,0,90,36,24,23,7,60,30,90,68.33333333333334,22
+56e6a66af6ed900006a5867c,learner,Midwest,United States,no,1,0,90,27,33,13,17,60,30,90,44.16666666666667,-7
+5727aecae386b9000f4000cd,learner,South,I am not familiar with Spanish,no,1,0,90,1,59,29,1,60,30,90,49.16666666666667,-1
+57901207c9abeb0001af353e,learner,Midwest,I am not familiar with Spanish,no,1,0,90,21,39,18,12,60,30,90,47.5,-3
+5844812dc5bc3a0001a4d553,learner,East coast,Mexico,no,1,0,90,33,27,14,16,60,30,90,50.833333333333336,1
+588e3172bc9f190001487eb8,learner,Midwest,Spain,no,1,0,90,34,26,15,15,60,30,90,53.33333333333333,4
+58a5cf959e040a0001399f07,learner,Midwest,Spain,no,1,0,90,10,50,23,7,60,30,90,46.66666666666667,-4
+58f0fca0d40252000192f201,learner,Northeast,United States,no,1,0,90,23,37,18,12,60,30,90,49.16666666666667,-1
+59dba8575cddae0001ff0780,learner,Midwest,United States,no,1,0,90,23,37,16,14,60,30,90,45.833333333333336,-5
+59dc458f77860e000151240e,learner,Midwest,United States,no,1,0,90,30,30,14,16,60,30,90,48.33333333333333,-2
+59e91cebae9f950001d8466a,learner,Midwest,I am not familiar with Spanish,no,1,0,90,11,49,20,10,60,30,90,42.49999999999999,-9
+5a0502cb517dfb00013db4a3,learner,Northeast,United States,no,1,0,90,22,38,17,13,60,30,90,46.666666666666664,-4
+5a2e19cca3a512000195866a,learner,Midwest,United States,no,1,0,90,6,54,30,0,60,30,90,55,6
+5acacdcd0527ba0001c24bad,learner,East coast,United States,no,1,0,90,27,33,15,15,60,30,90,47.5,-3
+5adfbd52f6b58c0001fa8f3c,learner,South,I am not familiar with Spanish,no,1,0,90,25,35,20,10,60,30,90,54.166666666666664,5
+5aea962d0ef2f20001858c9c,learner,West coast,I am not familiar with Spanish,no,1,0,90,30,30,14,16,60,30,90,48.33333333333333,-2
+5aede0b676b763000132f6a4,learner,East coast,Mexico,no,1,0,90,25,35,13,17,60,30,90,42.5,-9
+5b15d20c444cef0001cb1153,learner,East coast,United States,no,1,0,90,18,42,15,15,60,30,90,40,-12
+5b50881a59119400018abaf3,learner,East coast,United States,no,1,0,90,21,39,22,8,60,30,90,54.166666666666664,5
+5b5b455d8fb47700015830b7,learner,East coast,Spain,no,1,0,90,14,46,24,6,60,30,90,51.666666666666664,2
+5bb6413cb4dca50001df0096,learner,Northeast,Mexico,no,1,0,90,16,44,25,5,60,30,90,55.00000000000001,6
+5bc5356e65cfb8000154bd82,learner,Northeast,I am not familiar with Spanish,no,1,0,90,40,20,7,23,60,30,90,44.99999999999999,-6
+5bc9f91f418bad00016c6773,learner,Northeast,Mexico,no,1,0,90,17,43,22,8,60,30,90,50.83333333333333,1
+5bdab584b341a4000154256b,learner,Midwest,I am not familiar with Spanish,no,1,0,90,16,44,20,10,60,30,90,46.666666666666664,-4
+5c049e9bad9a9700011b877b,learner,Midwest,Peru,no,1,0,90,39,21,19,11,60,30,90,64.16666666666666,17
+5c1919fbd9241d0001363964,learner,Midwest,I am not familiar with Spanish,no,1,0,90,26,34,16,14,60,30,90,48.333333333333336,-2
+5c1dc77ee2d9150001b5b70e,learner,Northeast,I am not familiar with Spanish,no,1,0,90,17,43,19,11,60,30,90,45.83333333333333,-5
+5c59aecb6ca5e600017206de,learner,Midwest,Mexico,no,1,0,90,17,43,22,8,60,30,90,50.83333333333333,1
+5c5fc78e96dff400013607a5,learner,East coast,United States,no,1,0,90,27,33,19,11,60,30,90,54.166666666666664,5
+5c6d460ec3aa150001145611,learner,East coast,I am not familiar with Spanish,no,1,0,90,8,52,20,10,60,30,90,39.99999999999999,-12
+5c70eafaf6c9fe00013eeafb,learner,Midwest,United States,no,1,0,90,14,46,22,8,60,30,90,48.33333333333333,-2
+5c742339e621f900163f4543,learner,East coast,United States,no,1,0,90,18,42,20,10,60,30,90,48.33333333333333,-2
+5c75471e5eb59f000131c7a4,learner,Northeast,United States,no,1,0,90,16,44,28,2,60,30,90,60,12
+5cdf215da7b516001828bdda,learner,Northeast,Spain,yes,1,0,90,21,39,16,14,60,30,90,44.16666666666667,-7
+5ced8f96a726ed0015d31452,learner,Northeast,Mexico,no,1,0,90,26,34,17,13,60,30,90,50,0
+5d0ac7504d57690017a355ef,learner,East coast,Mexico,no,1,0,90,16,44,21,9,60,30,90,48.333333333333336,-2
+5d0d260f7374b40019cef54a,learner,East coast,Spain,no,1,0,90,25,35,19,11,60,30,90,52.5,3
+5d184b040a274600013f7107,learner,West coast,United States,no,1,0,90,26,34,16,14,60,30,90,48.333333333333336,-2
+5d22686d9b3bf900019d73c0,learner,Northeast,United States,no,1,0,90,14,46,22,8,60,30,90,48.33333333333333,-2
+5d453e8723a5bb0001492546,learner,South,Puerto Rico,no,1,0,90,11,49,24,6,60,30,90,49.166666666666664,-1
+5d4613a2da9cb60001aa4948,learner,Midwest,United States,no,1,0,90,29,31,17,13,60,30,90,52.5,3
+5d61798f7ad20f001b74922e,learner,Northeast,Spain,no,1,0,90,34,26,12,18,60,30,90,48.33333333333333,-2
+5d62886927a84f00010fbbb4,learner,East coast,United States,no,1,0,90,9,51,20,10,60,30,90,40.83333333333333,-11
+5d8f8510f3e52d0018924390,learner,Northeast,United States,no,1,0,90,21,39,19,11,60,30,90,49.166666666666664,-1
+5dcc5f2545b8f98fd44ab4d7,learner,Northeast,United States,no,1,0,90,26,34,16,14,60,30,90,48.333333333333336,-2
+5dd1ab5dd3ac2a21600f87b8,learner,Midwest,Spain,no,1,0,90,23,37,21,9,60,30,90,54.16666666666667,5
+5dd32e9deab0423455e0358f,learner,South,United States,no,1,0,90,8,52,28,2,60,30,90,53.33333333333333,4
+5ddda819ca7466d2350d77c6,learner,Northeast,Spain,no,1,0,90,22,38,18,12,60,30,90,48.33333333333333,-2
+5deec7e78b5f8b5683c0355a,learner,East coast,Spain,no,1,0,90,15,45,17,13,60,30,90,40.83333333333333,-11
+5e14bd64617219ae6593485a,learner,Northeast,Spain,no,1,0,90,24,36,13,17,60,30,90,41.66666666666667,-10
+5e1a7114a90da52e206de7ea,learner,West coast,I am not familiar with Spanish,no,1,0,90,25,35,16,14,60,30,90,47.5,-3
+5e2ec46a316225000cf293ce,learner,Northeast,Spain,no,1,0,90,30,30,15,15,60,30,90,50,0
+5e2f131d0473500224f75035,learner,Midwest,I am not familiar with Spanish,no,1,0,90,33,27,13,17,60,30,90,49.16666666666667,-1
+5e307b72ef67c706b15f4453,learner,Midwest,I am not familiar with Spanish,no,1,0,90,29,31,16,14,60,30,90,50.833333333333336,1
+5e387f2c0d70ef099d5e5a4f,learner,Northeast,United States,no,1,0,90,21,39,24,6,60,30,90,57.5,9
+5e3dff6b8714b707b9a258b0,learner,West coast,United States,yes,1,0,90,24,36,14,16,60,30,90,43.33333333333333,-8
+5e5e11aed2420e129dc155ce,learner,Midwest,United States,no,1,0,90,2,58,29,1,60,30,90,50,0
+5e85088b3f06400f3f75e21f,learner,South,I am not familiar with Spanish,no,1,0,90,27,33,14,16,60,30,90,45.83333333333333,-5
+5e88dc8c101fec57cb09fa3a,learner,Midwest,Mexico,yes,1,0,90,18,42,18,12,60,30,90,45,-6
+5e8a5f27f35994098ee9a4aa,learner,Midwest,Spain,no,1,0,90,29,31,20,10,60,30,90,57.5,9
+5e92a1a4fc57e20f92eef47f,learner,Northeast,I am not familiar with Spanish,no,1,0,90,11,49,23,7,60,30,90,47.5,-3
+5e9498c27ca863327ced415f,learner,Midwest,United States,no,1,0,90,23,37,21,9,60,30,90,54.16666666666667,5
+5e960111bc10f706bfe802fe,learner,Midwest,United States,no,1,0,90,20,40,22,8,60,30,90,53.33333333333333,4
+5e9a84af150a8012575e4784,learner,Midwest,Mexico,no,1,0,90,20,40,24,6,60,30,90,56.666666666666664,8
+5e9b443223881d04be740737,learner,Midwest,United States,no,1,0,90,16,44,25,5,60,30,90,55.00000000000001,6
+5e9fcb1aa7eac5182448d5ab,learner,Northeast,Colombia,no,1,0,90,29,31,18,12,60,30,90,54.16666666666667,5
+5eb0bbbc0be27c183500b45d,learner,Northeast,Spain,no,1,0,90,26,34,13,17,60,30,90,43.333333333333336,-8
+5eb3623f751686152660a84b,learner,East coast,Spain,no,1,0,90,34,26,23,7,60,30,90,66.66666666666667,20
+5eb46ccc0c06142c0faae377,learner,Northeast,United States,no,1,0,90,21,39,26,4,60,30,90,60.833333333333336,13
+5eb5c26dd25d2549d228fdf1,learner,East coast,United States,no,1,0,90,15,45,18,12,60,30,90,42.5,-9
+5eb69d6f0c2db401c496390f,learner,East coast,Mexico,no,1,0,90,29,31,14,16,60,30,90,47.5,-3
+5ec4465c16290213a8e30fd5,learner,East coast,Spain,no,1,0,90,10,50,20,10,60,30,90,41.66666666666666,-10
+5ec8ad205fa667395e141ce9,learner,Midwest,Mexico,no,1,0,90,24,36,14,16,60,30,90,43.33333333333333,-8
+5ed6c9613e5fc912b310c00c,learner,East coast,I am not familiar with Spanish,no,1,0,90,8,52,22,8,60,30,90,43.33333333333333,-8
+5ed92a47585c150e2dc44740,learner,East coast,Spain,no,1,0,90,28,32,13,17,60,30,90,45,-6
+5eda86226763346ac679ca5f,learner,Northeast,United States,no,1,0,90,17,43,16,14,60,30,90,40.833333333333336,-11
+5edfb0770fb0722aa3839b6d,learner,Northeast,United States,no,1,0,90,13,47,26,4,60,30,90,54.16666666666667,5
+5ee50130f8d19d080bcc8263,learner,East coast,Mexico,no,1,0,90,31,29,22,8,60,30,90,62.5,15
+5ef411225a5e591d15fda2ec,learner,Midwest,Mexico,yes,1,1,90,24,36,16,14,60,30,90,46.66666666666667,-4
+5efb5360f3f69c084c1ca850,learner,East coast,I am not familiar with Spanish,no,1,0,90,29,31,14,16,60,30,90,47.5,-3
+5f0499756b5d4972f0da9c78,learner,East coast,United States,no,1,0,90,29,31,19,11,60,30,90,55.83333333333333,7
+5f055b6ca28292863f750383,learner,East coast,United States,no,1,0,90,11,49,27,3,60,30,90,54.166666666666664,5
+5f0763da47bd2b3561e8d085,learner,Midwest,United States,no,1,0,90,14,46,25,5,60,30,90,53.333333333333336,4
+5f121091e95fdc03b5e897d0,learner,Midwest,Mexico,no,1,0,90,17,43,18,12,60,30,90,44.166666666666664,-7
+5f14e0f456500058ee865863,learner,Midwest,Spain,no,1,0,90,35,25,13,17,60,30,90,50.833333333333336,1
+5f163626e9b14f1bfccf2b67,learner,Northeast,United States,no,1,0,90,36,24,14,16,60,30,90,53.33333333333333,4
+5f186916b4317902cdb28f39,learner,Midwest,I am not familiar with Spanish,no,1,0,90,29,31,13,17,60,30,90,45.833333333333336,-5
+5f22bdb732432502a2615f3f,learner,Northeast,Dominican Republic,no,1,0,90,38,22,24,6,60,30,90,71.66666666666666,26
+5f23ff398626c51fdd6c3fb5,learner,Northeast,United States,no,1,0,90,23,37,18,12,60,30,90,49.16666666666667,-1
+5f2af333a305a1453082fa08,learner,Northeast,United States,no,1,0,90,32,28,13,17,60,30,90,48.333333333333336,-2
+5f2cd45cd689ae1ec67c848c,learner,Midwest,Spain,no,1,0,90,37,23,13,17,60,30,90,52.5,3
+5f2f03deec679e2cf4a992e6,learner,Midwest,United States,no,1,0,90,29,31,14,16,60,30,90,47.5,-3
+5f317125c5a8420186619723,learner,Southwest,United States,no,1,0,90,38,22,4,26,60,30,90,38.33333333333333,-14
+5f32a66eb0b759099d33fb8c,learner,Midwest,I am not familiar with Spanish,no,1,0,90,19,41,17,13,60,30,90,44.166666666666664,-7
+5f3810bc8049e40ad7b6909a,learner,Midwest,United States,no,1,0,90,23,37,16,14,60,30,90,45.833333333333336,-5
+5f3bf76b70b2305d2e676bc8,learner,Southwest,United States,no,1,0,90,38,22,10,20,60,30,90,48.33333333333333,-2
+5f3d1db8a6057b0217f30a13,learner,East coast,United States,no,1,0,90,10,50,25,5,60,30,90,50,0
+5f3eeb74bfbc021a779796d2,learner,Midwest,United States,yes,1,0,90,31,29,13,17,60,30,90,47.5,-3
+5f3fecd2bc9bac0b4ca93d30,learner,Midwest,Honduras,no,1,0,90,29,31,24,6,60,30,90,64.16666666666667,17
+5f40de3e899a9b2155b6eabf,learner,Northeast,United States,no,1,0,90,35,25,15,15,60,30,90,54.16666666666667,5
+5f4580ba9ae79f195a9ece38,learner,Northeast,United States,no,1,0,90,56,4,17,13,60,30,90,75,30
+5f46fd0e30f69f0de0dfa38c,learner,Northeast,United States,no,1,0,90,1,59,28,2,60,30,90,47.5,-3
+5f48e9e36d9c7b3b69c5ed4f,learner,East coast,Mexico,no,1,0,90,27,33,13,17,60,30,90,44.16666666666667,-7
+5f49286a48bd2a43821fab14,learner,Midwest,Mexico,no,1,0,90,10,50,25,5,60,30,90,50,0
+5f4cfe26fc6fe994078bedd3,learner,Northeast,United States,no,1,0,90,29,31,13,17,60,30,90,45.833333333333336,-5
+5f4e50590bf655000c944e16,learner,Northeast,I am not familiar with Spanish,no,1,0,90,14,46,20,10,60,30,90,44.99999999999999,-6
+5f53927e3a8bb66b0f07d471,learner,Northeast,Spain,no,1,0,90,60,0,12,18,60,30,90,70,24
+5f5588d8f313fc95927e288b,learner,Northeast,Mexico,no,1,0,90,8,52,21,9,60,30,90,41.666666666666664,-10
+5f56481f814f890398411ba3,learner,Northeast,I am not familiar with Spanish,no,1,0,90,28,32,17,13,60,30,90,51.666666666666664,2
+5f579b85e5442025dcc0c068,learner,Southwest,Spain,no,1,0,90,32,28,11,19,60,30,90,45,-6
+5f582002dff3f038d1eb83c4,learner,Midwest,Mexico,no,1,0,90,25,35,20,10,60,30,90,54.166666666666664,5
+5f59196cdfe283117d6e909e,learner,Midwest,Spain,no,1,0,90,19,41,22,8,60,30,90,52.5,3
+5f656030cd36f609db0da23e,learner,Midwest,Mexico,no,1,0,90,38,22,19,11,60,30,90,63.33333333333333,16
+5f6a094092466e03262c6b37,learner,Northeast,United States,no,1,0,90,25,35,18,12,60,30,90,50.833333333333336,1
+5f6bc8e8a9a9b4134c8719b4,learner,Northeast,United States,no,1,0,90,20,40,18,12,60,30,90,46.666666666666664,-4
+5f7058deeb83ab60bb836eae,learner,Midwest,Spain,no,1,0,90,12,48,28,2,60,30,90,56.666666666666664,8
+5f7cdbfddd75001800fa84b9,learner,Midwest,United States,no,1,0,90,19,41,20,10,60,30,90,49.16666666666666,-1
+5f80bc44efa2c013099af460,learner,Midwest,Spain,no,1,0,90,15,45,25,5,60,30,90,54.16666666666667,5
+5f865e9ac5be471b63865294,learner,East coast,United States,no,1,0,90,18,42,21,9,60,30,90,50,0
+5f8dbc2dbe6a9e10493e3d6e,learner,East coast,Spain,no,1,0,90,24,36,27,3,60,30,90,65,18
+5f90744a10d3371291f6c0b2,learner,Midwest,Mexico,no,1,0,90,33,27,8,22,60,30,90,40.833333333333336,-11
+5f9710e93c0e4a07c48e98d9,learner,Northeast,United States,no,1,1,90,29,31,12,18,60,30,90,44.16666666666667,-7
+5f9858b14dff5d10e5c3cdb3,learner,Northeast,I am not familiar with Spanish,no,1,0,90,17,43,18,12,60,30,90,44.166666666666664,-7
+5f985a6faf071810974a32f8,learner,Midwest,United States,no,1,0,90,27,33,13,17,60,30,90,44.16666666666667,-7
+5f99e3031e4f740c4a2f6cbc,learner,Midwest,I am not familiar with Spanish,no,1,0,90,14,46,21,9,60,30,90,46.666666666666664,-4
+5fa500331b3c351a9d18488c,learner,Northeast,United States,yes,1,0,90,35,25,15,15,60,30,90,54.16666666666667,5
+5faeb0771929e6000941ecc5,learner,Northeast,United States,no,1,0,90,29,31,16,14,60,30,90,50.833333333333336,1
+5fb327660f80c1a4d39fada2,learner,Northeast,Spain,no,1,0,90,8,52,27,3,60,30,90,51.666666666666664,2
+5fb33ec89c2b44a71c2cd5df,learner,Midwest,Mexico,no,1,0,90,19,41,19,11,60,30,90,47.5,-3
+5fb41bf3f84c7006ac8e30f2,learner,Midwest,United States,no,1,0,90,22,38,11,19,60,30,90,36.666666666666664,-16
+5fb596ff69ed590fff92ba8f,learner,Midwest,United States,no,1,0,90,7,53,27,3,60,30,90,50.833333333333336,1
+5fb6da2d039b27111314d871,learner,Midwest,Spain,no,1,0,90,24,36,22,8,60,30,90,56.666666666666664,8
+5fb6f3bc48d534199270ad38,learner,Midwest,United States,no,1,0,90,0,60,30,0,60,30,90,50,0
+5fb87ecac3b7885df134405a,learner,Midwest,I am not familiar with Spanish,no,1,0,90,1,59,30,0,60,30,90,50.833333333333336,1
+5fb93ffbd40ee27661244708,learner,Midwest,Mexico,no,1,0,90,25,35,17,13,60,30,90,49.16666666666667,-1
+5fb9689421064d7ff5f5243e,learner,Midwest,United States,no,1,1,90,27,33,18,12,60,30,90,52.5,3
+5fbd1e2fb3756f06700d2475,learner,Northeast,I am not familiar with Spanish,yes,1,0,90,48,12,19,11,60,30,90,71.66666666666666,26
+5fc004cdd7890e102cc48ce6,learner,Midwest,Mexico,no,1,0,90,25,35,20,10,60,30,90,54.166666666666664,5
+5fc00932d6371d37ee128423,learner,East coast,Mexico,no,1,0,90,37,23,15,15,60,30,90,55.833333333333336,7
+5fc51d23152a5a0008a1956c,learner,East coast,Mexico,no,1,0,90,30,30,18,12,60,30,90,55,6
+5fc663e511783d0a0e619de1,learner,Northeast,United States,no,1,0,90,15,45,27,3,60,30,90,57.5,9
+5fc8232ac3b2ae180fa1a39b,learner,West coast,United States,no,1,1,90,17,43,21,9,60,30,90,49.166666666666664,-1
+5fce532e51f670000a2a1410,learner,Midwest,Mexico,no,1,0,90,11,49,23,7,60,30,90,47.5,-3
+5fcf286268f4c722183af975,learner,South,Mexico,no,1,0,90,39,21,8,22,60,30,90,45.833333333333336,-5
+5fd4335c2d643f1a0ed65cb7,learner,Midwest,Mexico,no,1,0,90,25,35,16,14,60,30,90,47.5,-3
+5fdf9d13a6a9ed7d8efd0b69,learner,Midwest,United States,no,1,0,90,20,40,15,15,60,30,90,41.666666666666664,-10
+5febbf353cc53cce4cec36e3,learner,Midwest,Costa Rica,no,1,0,90,37,23,11,19,60,30,90,49.16666666666667,-1
+5fecd5fa7e067ae6bd9cc8d2,learner,South,I am not familiar with Spanish,no,1,0,90,12,48,23,7,60,30,90,48.333333333333336,-2
+5fed01281d6cb4f2fef20220,learner,Northeast,Costa Rica,no,1,0,90,26,34,22,8,60,30,90,58.33333333333333,10
+5feef07e0ad48b201b5ad5fe,learner,Northeast,I am not familiar with Spanish,no,1,0,90,13,47,17,13,60,30,90,39.166666666666664,-13
+5ff1e7e39f4b9e67a53f893a,learner,Northeast,I am not familiar with Spanish,no,1,1,90,38,22,7,23,60,30,90,43.33333333333333,-8
+5ff364b2c9707d906a0fc44e,learner,Midwest,Colombia,no,1,0,90,34,26,18,12,60,30,90,58.33333333333333,10
+5ff8b291840bed124061d389,learner,East coast,Mexico,no,1,0,90,20,40,23,7,60,30,90,55,6
+5ffef0a1255d0c5fd3bdfd6a,learner,East coast,Mexico,no,1,0,90,18,42,24,6,60,30,90,55,6
+6005a135fff7b6818a99fd87,learner,East coast,Mexico,no,1,0,90,26,34,20,10,60,30,90,55,6
+600b0f7fa045ed0f806f01e2,learner,Northeast,I am not familiar with Spanish,no,1,0,90,37,23,15,15,60,30,90,55.833333333333336,7
+600be42e32909325b20ab5f0,learner,Midwest,Mexico,no,1,0,90,22,38,24,6,60,30,90,58.33333333333333,10
+600e9f3d9b955475336971bb,learner,South,I am not familiar with Spanish,no,1,0,90,28,32,16,14,60,30,90,50,0
+600f3bb4c3125f0d2a2f0d36,learner,East coast,Mexico,no,1,0,90,17,43,23,7,60,30,90,52.5,3
+60105552a0d121342846b31a,learner,Northeast,Mexico,no,1,0,90,28,32,13,17,60,30,90,45,-6
+601228de8f04be234171ca8f,learner,Northeast,Mexico,no,1,0,90,13,47,29,1,60,30,90,59.16666666666667,11
+601840b15165f20756c64e0f,learner,East coast,Mexico,no,1,0,90,35,25,10,20,60,30,90,45.83333333333333,-5
+601c454a1e2f3c720321470b,learner,Midwest,Mexico,no,1,1,90,12,48,28,2,60,30,90,56.666666666666664,8
+601c8b5b02683a7e54b93aeb,learner,Northeast,Spain,no,1,0,90,14,46,17,13,60,30,90,40,-12
+601e15660cc54b258b587d3d,learner,Northeast,Mexico,no,1,0,90,36,24,7,23,60,30,90,41.666666666666664,-10
+601f04fb235cb14020c7a96f,learner,Midwest,Mexico,no,1,0,90,15,45,26,4,60,30,90,55.833333333333336,7
+6021d935ae778527962c9fd3,learner,East coast,Spain,no,1,1,90,14,46,21,9,60,30,90,46.666666666666664,-4
+6021f6c1f883e82b11739f31,learner,Midwest,Puerto Rico,no,1,1,90,48,12,20,10,60,30,90,73.33333333333333,28
+6023df587f535406af0c7fcb,learner,East coast,Spain,no,1,0,90,24,36,13,17,60,30,90,41.66666666666667,-10
+6026adf0704fd23a5dc0ee32,learner,Midwest,United States,no,1,0,90,34,26,11,19,60,30,90,46.666666666666664,-4
+60274b8abca008526ce6433c,learner,Midwest,United States,no,1,0,90,48,12,6,24,60,30,90,50,0
+602854edbf92e76fc9c56355,learner,Northeast,Spain,no,1,0,90,48,12,26,4,60,30,90,83.33333333333334,40
+602c790b7597b0571b1e1472,learner,East coast,United States,no,1,0,90,34,26,11,19,60,30,90,46.666666666666664,-4
+60307e9acd3854f1656ac658,learner,Midwest,Mexico,yes,1,0,90,2,58,30,0,60,30,90,51.666666666666664,2
+603401117dd0c2000a1cb8e6,learner,Midwest,I am not familiar with Spanish,no,1,1,90,21,39,18,12,60,30,90,47.5,-3
+603414a536144802cda025f5,learner,Northeast,United States,no,1,0,90,14,46,20,10,60,30,90,44.99999999999999,-6
+60368a98238695837a78529b,learner,East coast,United States,no,1,0,90,34,26,16,14,60,30,90,55,6
+6037034f07abbf728431e247,learner,Midwest,I am not familiar with Spanish,no,1,1,90,23,37,13,17,60,30,90,40.833333333333336,-11
+603cf23d1967b3b1cc9a2df0,learner,East coast,United States,no,1,0,90,26,34,14,16,60,30,90,45,-6
+603d631cffe72fc0ff456cc2,learner,Northeast,United States,yes,1,0,90,14,46,16,14,60,30,90,38.333333333333336,-14
+6041a2482c6bef1ae8fdd51e,learner,Midwest,United States,no,1,0,90,1,59,29,1,60,30,90,49.16666666666667,-1
+604243ad9743df09e0f72587,learner,Midwest,Mexico,no,1,0,90,6,54,22,8,60,30,90,41.666666666666664,-10
+60439d78a013a237855f2ac8,learner,East coast,Spain,no,1,0,90,32,28,7,23,60,30,90,38.333333333333336,-14
+60441fcec87598475f6a829f,learner,Midwest,Mexico,no,1,0,90,33,27,12,18,60,30,90,47.5,-3
+6044d8e1c960ed56b4b31fe7,learner,Northeast,Peru,no,1,0,90,22,38,15,15,60,30,90,43.33333333333333,-8
+6047be65ca7cb2053e6aa926,learner,Northeast,United States,no,1,0,90,14,46,18,12,60,30,90,41.666666666666664,-10
+60480a1f6a283e139e6757b6,learner,Northeast,Dominican Republic,no,1,0,90,10,50,28,2,60,30,90,55,6
+60485c6bfddf0e195cb18b62,learner,South,I am not familiar with Spanish,no,1,0,90,20,40,19,11,60,30,90,48.33333333333333,-2
+60498abf0459d95ae80f42ac,learner,Northeast,Costa Rica,no,1,0,90,33,27,11,19,60,30,90,45.833333333333336,-5
+604d09c45aedf7f70c3c66bf,learner,East coast,Mexico,no,1,0,90,28,32,22,8,60,30,90,60,12
+604d547ca4ba0b35e56b2594,learner,East coast,I am not familiar with Spanish,no,1,0,90,24,36,16,14,60,30,90,46.66666666666667,-4
+60514fe20a8ea24a26a96e85,learner,East coast,Mexico,no,1,0,90,29,31,17,13,60,30,90,52.5,3
+60555b56af1bc30f5d438bd2,learner,Northeast,United States,no,1,0,90,6,54,28,2,60,30,90,51.666666666666664,2
+6055710aefbed49cbc6c872b,learner,West coast,I am not familiar with Spanish,no,1,0,90,6,54,27,3,60,30,90,50,0
+6057880f8633bbd79c6f10d8,learner,Northeast,United States,no,1,0,90,25,35,16,14,60,30,90,47.5,-3
+605796ef0a4b32599655c385,learner,East coast,Puerto Rico,no,1,0,90,27,33,15,15,60,30,90,47.5,-3
+60579ed57a769950e21bcda2,learner,East coast,United States,no,1,0,90,31,29,18,12,60,30,90,55.833333333333336,7
+midd01,learner,Northeast,Honduras,no,1,0,90,53,7,18,12,60,30,90,74.16666666666666,29
+midd02,learner,Midwest,Puerto Rico,yes,1,0,90,48,12,23,7,60,30,90,78.33333333333334,34
+midd03,learner,Midwest,Spain,no,1,0,90,52,8,27,3,60,30,90,88.33333333333334,46
+midd04,learner,Northeast,Colombia,yes,1,0,90,49,11,23,7,60,30,90,79.16666666666667,35
+midd05,learner,Northeast,Spain,no,1,0,90,44,16,28,2,60,30,90,83.33333333333333,40
+midd06,learner,Midwest,Spain,yes,1,0,90,45,15,22,8,60,30,90,74.16666666666666,29
+midd07,learner,West coast,Spain,no,1,0,90,46,14,25,5,60,30,90,80,36
+midd08,learner,Midwest,United States,no,1,0,90,30,30,26,4,60,30,90,68.33333333333334,22
+midd09,learner,East coast,Spain,yes,1,0,90,47,13,26,4,60,30,90,82.5,39
+midd11,learner,Midwest,Costa Rica,no,1,0,90,43,17,23,7,60,30,90,74.16666666666667,29
+midd12,learner,South,United States,yes,1,0,90,39,21,28,2,60,30,90,79.16666666666666,35
+midd13,learner,Southwest,Spain,no,1,0,90,36,24,21,9,60,30,90,65,18
+midd14,learner,West coast,Spain,yes,1,0,90,51,9,21,9,60,30,90,77.5,33
+midd15,learner,East coast,Spain,yes,1,0,90,55,5,25,5,60,30,90,87.5,45
+midd17,learner,Southwest,Mexico,no,1,0,90,33,27,25,5,60,30,90,69.16666666666667,23
+midd19,learner,Midwest,Mexico,no,1,0,90,49,11,18,12,60,30,90,70.83333333333334,25
+midd22,learner,Midwest,Spain,yes,1,0,90,54,6,28,2,60,30,90,91.66666666666666,50
+midd24,learner,South,United States,no,1,0,90,35,25,25,5,60,30,90,70.83333333333334,25
+midd25,learner,Northeast,Spain,yes,1,0,90,47,13,29,1,60,30,90,87.5,45
+midd26,learner,Northeast,United States,no,1,0,90,52,8,19,11,60,30,90,75,30
+midd27,learner,Northeast,Spain,yes,1,0,90,48,12,18,12,60,30,90,70,24
+midd28,learner,Midwest,Colombia,yes,1,0,90,57,3,29,1,60,30,90,95.83333333333334,55
+midd29,learner,South,Spain,no,1,0,90,44,16,25,5,60,30,90,78.33333333333334,34
+midd30,learner,Northeast,Spain,no,1,0,90,46,14,18,12,60,30,90,68.33333333333334,22
+midd31,learner,East coast,Mexico,no,1,0,90,49,11,22,8,60,30,90,77.5,33

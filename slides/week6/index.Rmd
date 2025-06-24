@@ -1,0 +1,116 @@
+---
+title: "Week 6: Multiple Regression"
+subtitle: 'Statistics for Linguists'
+author  : "Kyle Parrish"
+date    : "Goethe Uni Frankurt</br>Summer 2025</br>Last update: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, hygge, my-css.css, rutgers-fonts]
+    lib_dir: libs
+    nature:
+      countIncrementalSlides: false
+      ratio: 16:9
+---
+
+```{r, include = FALSE}
+# Packages --------------------------------------------------------------------
+
+# Custom
+library("ds4ling")
+library("lingStuff")
+library("untidydata")
+library("academicWriteR")
+
+# Tidyverse
+library("dplyr")
+library("tidyr")
+library("readr")
+library("purrr")
+library("here")
+library("forcats")
+library("stringr")
+library("glue")
+
+# Modeling
+library("lme4")
+library("brms")
+
+# Plotting
+library("ggplot2")
+library("patchwork")
+library("ggridges")
+library("ggrepel")
+library("viridis")
+library("ggfortify")
+
+# Misc
+library("knitr")
+library("kableExtra")
+library("latex2exp")
+library("broom")
+library("fGarch")
+library("equatiomatic")
+library("countdown")
+library("tiktokrmd")
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+```{r}
+#| echo: false
+source("_common.R")
+```
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+.center[
+## Slides are largely adapted from those by Joseph Casillas [here](https://www.ds4ling.jvcasillas.com/slides/05_lm/03_mrc/#/title-slide)]
+
+---
+
+# Linear Regression
+
+```{r include=FALSE}
+knitr::opts_chunk$set(cache=F, warning=FALSE, message=FALSE, echo = FALSE)
+library(arm)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+options(scipen = 0)
+```
+
+.pull-left[
+.large[
+So far, we have been focusing on **comparing two means** (e.g. is class A better than class B at math).
+]
+]
+
+--
+
+.pull-right[
+.large[
+Last week we did a .green[bivariate linear regression] (how much does fuel efficiency decrease as weight of a car increases?)
+
+We also mentioned we would come back to .red[confounding variables]
+]]
+
+---
+
