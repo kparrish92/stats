@@ -29,7 +29,7 @@ unique(eq_data$sentence_type)
 ## Filter the data for just one question type:
 
 inter_yn_df = eq_data %>% 
-  filter(sentence_type == "interrogative-total-yn")
+  filter(sentence_type == "declarative-broad-focus")
 
 ## Fit a model predicting percentage correct as a function of empathy score (eq_score)
 model1 = lm(correct_pct ~ eq_score, data = inter_yn_df)
