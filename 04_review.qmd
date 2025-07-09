@@ -40,6 +40,8 @@ library(untidydata)
 
 The untidydata library is a collection of 5 linguistic data sets. For this assignment, you will need to choose one of the five (details on the data sets: https://www.jvcasillas.com/untidydata/).
 
+OR you can find an open data set to use: https://osf.io/ 
+
 ## Example: The VOT data set
 
 If you simply type "untidydata::" in an R script, you should see a drop down window with the names of the 5 data sets. 
