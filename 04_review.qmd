@@ -1,7 +1,7 @@
 # Final Project: Statistics for Linguistcs 
 ## SoSE 2025
 
-Report an analysis of data with visualizations (ggplot), descriptive statistics (means and standard deviations), and an inferential test (a t-test or a linear model.
+Report an analysis of data with visualizations (ggplot), descriptive statistics (means and standard deviations), and an inferential test (a t-test or a linear model).
 The general due date for this activity is **August 22nd**, but if you need more time please discuss this with me. 
 To turn in your work, please save your R script and title it using your last name (e.g. Parrish.R), and also include a document (word, pdf, Google doc etc.) which includes a description of the data you chose, your visualization and your reporting of the descriptive and inferential statistics. 
 
